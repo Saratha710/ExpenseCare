@@ -1,0 +1,44 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "coreclr",
+      "request": "launch",
+      "name": "Launch ExpenseCareApi",
+      "preLaunchTask": "build ExpenseCareApi",
+      "program": "${workspaceFolder}/${input:apiDllPath}",
+      "cwd": "${workspaceFolder}/ExpenseCareApi",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch ExpenseCareUI (ng serve)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "start"
+      ],
+      "cwd": "${workspaceFolder}/ExpenseCareUI",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "pwa-chrome",
+      "request": "launch",
+      "name": "Attach to Chrome - ExpenseCareUI",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}/ExpenseCareUI/src"
+    }
+  ],
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "apiDllPath",
+      "description": "Enter path to the built ExpenseCareApi DLL relative to workspace root (e.g. ExpenseCareApi/bin/Debug/net8.0/ExpenseCareApi.dll)"
+    }
+  ]
+}

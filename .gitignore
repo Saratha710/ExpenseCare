@@ -1,0 +1,17 @@
+# Visual Studio / .NET
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# dotnet user secrets
+secrets.json
+
+# OS
+.DS_Store
