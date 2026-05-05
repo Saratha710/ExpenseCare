@@ -44,7 +44,6 @@ public class UpdateExpenseValidator : AbstractValidator<UpdateExpenseDto>
     // private static readonly string[] ValidExpenseTypes =
     //     { "Food", "Transport", "Utilities", "Maintenance",
     //       "Salary", "Office", "Medical", "Other" };
-
     public UpdateExpenseValidator()
     {
         RuleFor(x => x.ExpenseType)
