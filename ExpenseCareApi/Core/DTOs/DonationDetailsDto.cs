@@ -11,8 +11,10 @@ public class CreateDonationDetailsDto
     public string? DonationFor { get; set; }
     public DateTime? DonationDate { get; set; } = DateTime.Today;
     public string PaymentMode { get; set; }
-    public string?   PaymentReference { get; set; }
+    public string? PaymentReference { get; set; }
     public string? Notes { get; set; }
+    public string EntryBy { get; set; } = string.Empty;
+    public DateTime EntryAt { get; set; } = DateTime.Now;
 
 }
 
@@ -41,7 +43,7 @@ public class GetDonationDetailsDto
     public string PaymentMode { get; set; } = string.Empty;
     public string? DonationFor { get; set; }
     public string? Notes { get; set; }
-    public string EntryBy { get; set; } = string.Empty;
+    public string EntryBy { get; set; } = "string.Empty";
     public DateTime EntryAt { get; set; }
     public string Status { get; set; } = string.Empty;
     public string? ApprovedBy { get; set; }

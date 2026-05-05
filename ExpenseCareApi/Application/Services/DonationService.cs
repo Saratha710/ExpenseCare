@@ -28,6 +28,8 @@ public class DonationService : IDonationService
         entity.EntryAt = DateTime.UtcNow;
         //entity.EntryBy = _currentUser.Name;
         //entity.UserId = _currentUser.Id;
+        entity.EntryBy = string.IsNullOrWhiteSpace(dto.EntryBy) ? "Admin" : dto.EntryBy;
+
         entity.Status = "Pending";
 
         var result = await _donationRepo.CreateAsync(entity);

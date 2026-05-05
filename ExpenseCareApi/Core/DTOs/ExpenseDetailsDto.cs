@@ -11,6 +11,9 @@ public class CreateExpenseDto
     public string? AttachImage { get; set; }
     public string? Notes { get; set; }
 
+    public string EntryBy { get; set; } = string.Empty;
+    public DateTime EntryAt { get; set; } = DateTime.Now;
+
 }
 public class UpdateExpenseDto
 {

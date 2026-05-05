@@ -5,16 +5,16 @@ namespace ExpenseCareApi.Core.Validators;
 
 public class CreateExpenseValidator : AbstractValidator<CreateExpenseDto>
 {
-    private static readonly string[] ValidExpenseTypes =
-        { "Food", "Transport", "Utilities", "Maintenance",
-          "Salary", "Office", "Medical", "Other" };
+    // private static readonly string[] ValidExpenseTypes =
+    //     { "Food", "Old age home", "Utilities", "Maintenance",
+    //       "Temple", "Office", "Medical", "Other" };
 
     public CreateExpenseValidator()
     {
         RuleFor(x => x.ExpenseType)
-            .NotEmpty().WithMessage("Expense type is required")
-            .Must(type => ValidExpenseTypes.Contains(type))
-            .WithMessage($"Expense type must be one of: {string.Join(", ", ValidExpenseTypes)}");
+            .NotEmpty().WithMessage("Expense type is required");
+            // .Must(type => ValidExpenseTypes.Contains(type))
+            // .WithMessage($"Expense type must be one of: {string.Join(", ", ValidExpenseTypes)}");
 
         RuleFor(x => x.Amount)
             .GreaterThan(0).WithMessage("Amount must be greater than 0")
@@ -41,16 +41,16 @@ public class CreateExpenseValidator : AbstractValidator<CreateExpenseDto>
 }
 public class UpdateExpenseValidator : AbstractValidator<UpdateExpenseDto>
 {
-    private static readonly string[] ValidExpenseTypes =
-        { "Food", "Transport", "Utilities", "Maintenance",
-          "Salary", "Office", "Medical", "Other" };
+    // private static readonly string[] ValidExpenseTypes =
+    //     { "Food", "Transport", "Utilities", "Maintenance",
+    //       "Salary", "Office", "Medical", "Other" };
 
     public UpdateExpenseValidator()
     {
         RuleFor(x => x.ExpenseType)
-            .NotEmpty().WithMessage("Expense type is required")
-            .Must(type => ValidExpenseTypes.Contains(type))
-            .WithMessage($"Expense type must be one of: {string.Join(", ", ValidExpenseTypes)}");
+            .NotEmpty().WithMessage("Expense type is required");
+            // .Must(type => ValidExpenseTypes.Contains(type))
+            // .WithMessage($"Expense type must be one of: {string.Join(", ", ValidExpenseTypes)}");
 
         RuleFor(x => x.Amount)
             .GreaterThan(0).WithMessage("Amount must be greater than 0")

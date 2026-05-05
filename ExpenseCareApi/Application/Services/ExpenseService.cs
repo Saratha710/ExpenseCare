@@ -30,6 +30,8 @@ public class ExpenseService : IExpenseService
         //entity.EntryBy = _currentUser.Name;
         //entity.UserId = _currentUser.Id;
         entity.Status = "Pending";
+         entity.EntryBy = string.IsNullOrWhiteSpace(dto.EntryBy) ? "Admin" : dto.EntryBy;
+
 
         var result = await _expenseRepo.CreateAsync(entity);
         return _mapper.Map<GetExpenseDetailsDto>(result);

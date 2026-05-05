@@ -1,17 +1,8 @@
-# Visual Studio / .NET
-bin/
-obj/
-.vs/
+**/bin/
+**/obj/
 *.user
-*.suo
-*.userosscache
-*.sln.docstates
-
-# Rider
-.idea/
-
-# dotnet user secrets
-secrets.json
-
-# OS
+appsettings.Development.json
+**/node_modules/
+**/.angular/
+**/dist/
 .DS_Store

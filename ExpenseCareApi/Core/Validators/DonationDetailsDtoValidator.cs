@@ -49,9 +49,9 @@ public class CreateDonationValidator : AbstractValidator<CreateDonationDetailsDt
 
         // DonationDate — cannot be future date
         RuleFor(x => x.DonationDate)
-            .LessThanOrEqualTo(DateTime.Today)
-                .WithMessage("Donation date cannot be a future date")
-            .When(x => x.DonationDate.HasValue);
+            .Must(date => date!.Value.Date <= DateTime.Today)
+         .WithMessage("Donation date cannot be a future date")
+          .When(x => x.DonationDate.HasValue);
 
         // DonationFor — optional, max 200 chars
         RuleFor(x => x.DonationFor)
