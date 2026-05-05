@@ -1,0 +1,72 @@
+<div class="page-shell">
+  <div class="bg-layer"></div>
+  <div class="page-inner">
+
+    <div class="page-header">
+      <div><h2>{{ editingId ? 'Edit Donation' : 'New Donation' }}</h2></div>
+    </div>
+
+    @if (message()) {
+      <div class="alert" [class.alert-success]="success" [class.alert-error]="!success">
+        {{ message() }}
+      </div>
+    }
+
+    <div class="card form-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Donor name <span class="req">*</span></label>
+          <input type="text" [(ngModel)]="form.donorName" placeholder="Full name" />
+        </div>
+        <div class="form-group">
+          <label>Mobile</label>
+          <input type="text" [(ngModel)]="form.donorMobile" placeholder="10-digit number" />
+        </div>
+        <div class="form-group">
+          <label>Amount (₹) <span class="req">*</span></label>
+          <input type="number" [(ngModel)]="form.amount" placeholder="0.00" min="0.01" />
+        </div>
+        <div class="form-group">
+          <label>Donation date</label>
+          <input type="date" [(ngModel)]="form.donationDate" />
+        </div>
+        <div class="form-group">
+          <label>Payment mode <span class="req">*</span></label>
+          <select [(ngModel)]="form.paymentMode">
+            <option value="Cash">Cash</option>
+            <option value="UPI">UPI</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="Cheque">Cheque</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Donation for</label>
+          <input type="text" [(ngModel)]="form.donationFor" placeholder="Purpose of donation" />
+        </div>
+        <div class="form-group">
+          <label>Donor address</label>
+          <input type="text" [(ngModel)]="form.donorAddress" placeholder="Full address" />
+        </div>
+        <div class="form-group">
+          <label>Entry by <span class="req">*</span></label>
+          <input type="text" [(ngModel)]="form.entryBy" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <input type="text" [ngModel]="form.status" placeholder="Pending" disabled />
+        </div>
+        <div class="form-group full-col">
+          <label>Notes</label>
+          <textarea [(ngModel)]="form.notes" placeholder="Any additional remarks..." rows="3"></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn" (click)="resetForm()">Cancel</button>
+        <button class="btn btn-primary" (click)="submit()" [disabled]="loading()">
+          {{ loading() ? 'Saving...' : editingId ? 'Update Donation' : 'Save Donation' }}
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

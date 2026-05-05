@@ -1,0 +1,253 @@
+$navy-deep: #0a1628;
+$navy-mid:  #0f2447;
+$sky-mid:   #1e6fa8;
+$sky-light: #7dd3fc;
+$sky-pale:  #bae6fd;
+$white:     #ffffff;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+  position: relative;
+  color: $white;
+}
+
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(125,211,252,0.2) 0%, transparent 70%),
+    linear-gradient(170deg,
+      #{$navy-deep} 0%,
+      #{$navy-mid}  35%,
+      #1a4a7a       60%,
+      #{$sky-mid}   82%,
+      #4aaddc       100%
+    );
+}
+
+// ─── Card ─────────────────────────────────────────────────────────────────────
+.card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 400px;
+  margin: 1.5rem;
+  background: rgba($white, 0.13);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba($white, 0.22);
+  border-radius: 28px;
+  padding: 2.4rem 2rem;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.35), inset 0 1px 0 rgba($white,0.25);
+  text-align: center;
+}
+
+.card-icon {
+  font-size: 2.4rem;
+  margin-bottom: 0.7rem;
+  display: block;
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $white;
+  margin-bottom: 0.25rem;
+}
+
+.card-sub {
+  font-size: 0.82rem;
+  color: rgba($white, 0.6);
+  margin-bottom: 1.8rem;
+}
+
+// ─── Form ─────────────────────────────────────────────────────────────────────
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba($white, 0.75);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.04em;
+}
+
+.input-wrap {
+  display: flex;
+  align-items: center;
+  background: rgba($white, 0.1);
+  border: 1px solid rgba($white, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:focus-within {
+    border-color: rgba($sky-light, 0.6);
+    background: rgba($white, 0.15);
+  }
+
+  .input-icon { padding: 0 0.75rem; font-size: 0.9rem; flex-shrink: 0; }
+}
+
+.form-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: $white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  padding: 0.75rem 0.75rem 0.75rem 0;
+
+  &::placeholder { color: rgba($white, 0.35); }
+}
+
+.field-error {
+  display: block;
+  font-size: 0.75rem;
+  color: #fca5a5;
+  margin-top: 0.3rem;
+}
+
+.status-msg {
+  background: rgba(125,211,252,0.12);
+  border: 1px solid rgba(125,211,252,0.3);
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.82rem;
+  color: $sky-pale;
+  margin-bottom: 1rem;
+
+  &.error {
+    background: rgba(255,80,80,0.12);
+    border-color: rgba(255,80,80,0.3);
+    color: #fca5a5;
+  }
+}
+
+// ─── Buttons ──────────────────────────────────────────────────────────────────
+.btn-submit {
+  width: 100%;
+  padding: 0.9rem;
+  background: $white;
+  color: $navy-deep;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+
+  &:hover:not(:disabled) {
+    background: $sky-pale;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 0.8rem;
+  background: rgba($white, 0.08);
+  color: rgba($white, 0.85);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  border: 1px solid rgba($white, 0.18);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover { background: rgba($white, 0.14); color: $white; }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 1rem 0;
+
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba($white, 0.15);
+  }
+  span { font-size: 0.75rem; color: rgba($white, 0.4); }
+}
+
+// ─── OTP extras ───────────────────────────────────────────────────────────────
+.otp-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: rgba($white, 0.65);
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+
+  strong { color: $white; font-weight: 600; }
+}
+
+.otp-input {
+  letter-spacing: 0.3em;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.resend-row {
+  text-align: center;
+  margin: 0.4rem 0 0.8rem;
+  font-size: 0.82rem;
+}
+
+.resend-timer { color: rgba($white, 0.45); }
+
+.link-btn {
+  background: none;
+  border: none;
+  color: $sky-light;
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  font-family: 'DM Sans', sans-serif;
+  &:hover { color: $sky-pale; }
+}
+
+.spinner {
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.back-wrap {
+  text-align: left;
+}
+.back-link {
+  display: inline-block;
+  color: $sky-light;
+  font-size: 0.82rem;
+  text-decoration: none;
+  margin-bottom: 0.6rem;
+ 
+  &:hover { text-decoration: underline; color: $sky-pale; }
+}

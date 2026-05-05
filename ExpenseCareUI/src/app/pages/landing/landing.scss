@@ -1,0 +1,353 @@
+// ─── Design Tokens ────────────────────────────────────────────────────────────
+$navy-deep:   #0a1628;
+$navy-mid:    #0f2447;
+$sky-mid:     #1e6fa8;
+$sky-light:   #7dd3fc;
+$sky-pale:    #bae6fd;
+$white:       #ffffff;
+$accent:      #38bdf8;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap');
+
+// ─── Reset ────────────────────────────────────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+// ─── Page Shell ───────────────────────────────────────────────────────────────
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'DM Sans', sans-serif;
+  position: relative;
+  overflow: hidden;
+  color: $white;
+}
+
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 60% 100%, rgba(125,211,252,0.25) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(56,189,248,0.15) 0%, transparent 60%),
+    linear-gradient(175deg,
+      #{$navy-deep} 0%,
+      #{$navy-mid}  30%,
+      #1a4a7a       55%,
+      #{$sky-mid}   75%,
+      #4aaddc       90%,
+      #{$sky-light} 100%
+    );
+}
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+.site-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 3rem;
+}
+
+.logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  .logo-icon { font-size: 1.6rem; }
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+}
+
+.nav-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  color: rgba($white, 0.85);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 400;
+  padding: 0.45rem 1rem;
+  border-radius: 2rem;
+  transition: all 0.2s;
+
+  &:hover { background: rgba($white,0.12); color: $white; }
+
+  &.nav-cta {
+    background: rgba($white,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba($white,0.25);
+    font-weight: 500;
+    &:hover { background: rgba($white,0.25); }
+  }
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+.hero {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  padding: 3rem 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+// ─── Hero Left ────────────────────────────────────────────────────────────────
+.hero-left { flex: 1; }
+
+.badge-row {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1.8rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: $sky-pale;
+  background: rgba($white, 0.1);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba($sky-pale, 0.3);
+  padding: 0.3rem 0.8rem;
+  border-radius: 2rem;
+  letter-spacing: 0.04em;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.2rem;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.6);
+
+  .accent {
+    color: $sky-light;
+    text-shadow: 0 0 30px rgba(125,211,252,0.6), 0 4px 24px rgba(0,0,0,0.5);
+  }
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba($white, 0.85);
+  max-width: 440px;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.cta-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: $white;
+  color: $navy-deep;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.8rem 2rem;
+  border-radius: 3rem;
+  text-decoration: none;
+  transition: all 0.25s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    background: $sky-pale;
+  }
+}
+
+.btn-ghost {
+  display: inline-block;
+  color: rgba($white, 0.9);
+  font-size: 0.95rem;
+  font-weight: 400;
+  text-decoration: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 3rem;
+  border: 1px solid rgba($white,0.3);
+  transition: all 0.2s;
+  backdrop-filter: blur(4px);
+
+  &:hover { background: rgba($white,0.1); color: $white; }
+}
+
+.stats-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+
+  .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: $sky-light;
+    text-shadow: 0 0 20px rgba(125,211,252,0.5);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: rgba($white, 0.7);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 0.2rem;
+  }
+}
+
+.stat-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba($white,0.2);
+}
+
+// ─── Hero Right / Card ────────────────────────────────────────────────────────
+.hero-right {
+  flex: 0 0 360px;
+}
+
+.card {
+  background: rgba($white, 0.14);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba($white, 0.25);
+  border-radius: 24px;
+  padding: 2.2rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba($white,0.3);
+  text-align: center;
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.8rem;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $white;
+  margin-bottom: 0.3rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.card-sub {
+  font-size: 0.85rem;
+  color: rgba($white,0.7);
+  margin-bottom: 1.6rem;
+}
+
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.4rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  text-decoration: none;
+  text-align: left;
+  transition: all 0.2s;
+
+  .action-icon { font-size: 1.5rem; flex-shrink: 0; }
+
+  .action-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: $white;
+  }
+
+  .action-desc {
+    font-size: 0.75rem;
+    color: rgba($white,0.65);
+    margin-top: 0.1rem;
+  }
+
+  .action-arrow {
+    margin-left: auto;
+    color: rgba($white,0.5);
+    font-size: 1.1rem;
+    transition: transform 0.2s;
+  }
+
+  &:hover .action-arrow { transform: translateX(4px); }
+
+  &.action-primary {
+    background: rgba($white, 0.2);
+    border: 1px solid rgba($white,0.3);
+    &:hover { background: rgba($white, 0.28); transform: translateY(-1px); }
+  }
+
+  &.action-secondary {
+    background: rgba($white, 0.08);
+    border: 1px solid rgba($white,0.15);
+    &:hover { background: rgba($white, 0.14); transform: translateY(-1px); }
+  }
+}
+
+.card-footer {
+  font-size: 0.72rem;
+  color: rgba($white,0.5);
+  letter-spacing: 0.08em;
+}
+
+// ─── Site Footer ──────────────────────────────────────────────────────────────
+.site-footer {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 1.2rem;
+  font-size: 0.78rem;
+  color: rgba($white,0.45);
+}
+
+// ─── Responsive ───────────────────────────────────────────────────────────────
+@media (max-width: 860px) {
+  .hero {
+    flex-direction: column;
+    padding: 2rem 1.5rem 1.5rem;
+    gap: 2.5rem;
+    text-align: center;
+  }
+
+  .hero-left { display: flex; flex-direction: column; align-items: center; }
+  .badge-row { justify-content: center; }
+  .hero-sub { text-align: center; }
+  .hero-right { flex: none; width: 100%; max-width: 380px; }
+
+  .site-header { padding: 1rem 1.5rem; }
+}

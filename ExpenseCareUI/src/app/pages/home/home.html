@@ -1,0 +1,66 @@
+<div class="page-shell">
+  <div class="bg-layer"></div>
+  <div class="page-inner">
+
+    <div class="page-header">
+      <div>
+        <h2>Dashboard</h2>
+        <p>Overview of all transactions</p>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Donations</div>
+        <div class="stat-value">₹{{ totalDonations() | number }}</div>
+        <span class="badge badge-green">{{ donorCount() }} donors</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Expenses</div>
+        <div class="stat-value">₹{{ totalExpenses() | number }}</div>
+        <span class="badge badge-amber">This month</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Net Balance</div>
+        <div class="stat-value" [class.negative]="netBalance() < 0">₹{{ netBalance() | number }}</div>
+        <span class="badge" [class.badge-green]="netBalance() >= 0" [class.badge-red]="netBalance() < 0">
+          {{ netBalance() >= 0 ? 'Healthy' : 'Deficit' }}
+        </span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Donors</div>
+        <div class="stat-value">{{ donorCount() }}</div>
+        <span class="badge badge-blue">All time</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Recent Transactions</h3>
+        <div class="quick-links">
+          <a routerLink="/donation">+ Add Donation</a>
+          <a routerLink="/expense">+ Add Expense</a>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr><th>Date</th><th>Type</th><th>Name</th><th>Amount</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          @for (t of recentTransactions; track t.date) {
+            <tr>
+              <td>{{ t.date | date:'dd MMM yyyy' }}</td>
+              <td><span class="pill" [class.pill-green]="t.type === 'Donation'" [class.pill-amber]="t.type === 'Expense'">{{ t.type }}</span></td>
+              <td>{{ t.name }}</td>
+              <td>₹{{ t.amount | number }}</td>
+              <td><span class="pill" [class.pill-green]="t.status === 'Approved'" [class.pill-amber]="t.status === 'Pending'" [class.pill-red]="t.status === 'Rejected'">{{ t.status }}</span></td>
+            </tr>
+          } @empty {
+            <tr><td colspan="5" class="empty">No transactions yet</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

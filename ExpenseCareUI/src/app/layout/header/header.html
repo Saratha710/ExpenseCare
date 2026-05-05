@@ -1,0 +1,74 @@
+<!-- src/app/shared/header/header.html -->
+
+<!-- Header is completely hidden on landing / login / user-login pages -->
+@if (auth.isLoggedIn() && !isPreLoginPage()) {
+
+  <header class="header">
+
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+          <path d="M8 16C8 11.6 11.6 8 16 8C20.4 8 24 11.6 24 16"
+                stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M12 20L16 16L20 20"
+                stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="21" r="2" fill="white"/>
+        </svg>
+      </div>
+      <span class="logo-name">ExpenseCare</span>
+    </div>
+
+    <!-- ADMIN / TRUSTEE nav -->
+    @if (!auth.isUser) {
+      <nav class="nav">
+        <a routerLink="/home"     routerLinkActive="active">Home</a>
+        <a routerLink="/donation" routerLinkActive="active">Donation</a>
+        <a routerLink="/expense"  routerLinkActive="active">Expense</a>
+        <a routerLink="/reports"  routerLinkActive="active">Reports</a>
+        @if (auth.isAdmin) {
+          <a routerLink="/approve" routerLinkActive="active">Approvals</a>
+        }
+      </nav>
+
+      <div class="header-right">
+        @if (auth.isAdmin) {
+          <button class="bell-btn" (click)="goToApprovals()" title="Pending approvals">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            @if (pendingCount() > 0) {
+              <span class="badge">{{ pendingCount() }}</span>
+            }
+          </button>
+        }
+        <div class="user-pill">
+          <span class="user-avatar">{{ auth.userName?.charAt(0)?.toUpperCase() || 'A' }}</span>
+          <span class="user-label">{{ auth.userName }}</span>
+        </div>
+        <button type="button" class="logout" (click)="logout()">Logout</button>
+      </div>
+    }
+
+    <!-- USER / DONOR nav -->
+    @if (auth.isUser) {
+      <nav class="nav">
+        <a routerLink="/user-home"      routerLinkActive="active">Home</a>
+        <a routerLink="/user-donate"    routerLinkActive="active">Donate</a>
+        <a routerLink="/user-donations" routerLinkActive="active">My Donations</a>
+      </nav>
+
+      <div class="header-right">
+        <div class="user-pill">
+          <span class="user-avatar donor-avatar">{{ auth.userName?.charAt(0)?.toUpperCase() || 'D' }}</span>
+          <span class="user-label">{{ auth.userName }}</span>
+        </div>
+        <button type="button" class="logout" (click)="logout()">Logout</button>
+      </div>
+    }
+
+  </header>
+
+}

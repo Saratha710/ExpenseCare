@@ -1,0 +1,47 @@
+<div class="page-shell">
+  <div class="bg-layer"></div>
+  <div class="page-inner">
+
+    <div class="page-header">
+      <h2>Make a Donation</h2>
+    </div>
+
+    <div class="card form-card">
+      <div class="form-group">
+        <label>Donor Name</label>
+        <input type="text" [ngModel]="donorName" (ngModelChange)="onDonorNameInput($event)" placeholder="Your full name" maxlength="200" [class.input-error]="errors.donorName" />
+        @if (errors.donorName) { <p class="error">{{ errors.donorName }}</p> }
+      </div>
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input type="tel" [ngModel]="donorMobile" (ngModelChange)="onMobileInput($event)" placeholder="10-digit mobile number" maxlength="10" [class.input-error]="errors.donorMobile" />
+        @if (errors.donorMobile) { <p class="error">{{ errors.donorMobile }}</p> }
+      </div>
+      <div class="form-group">
+        <label>Donation Amount (₹)</label>
+        <input type="number" [(ngModel)]="amount" placeholder="Enter amount" min="1" [class.input-error]="errors.amount" />
+        @if (errors.amount) { <p class="error">{{ errors.amount }}</p> }
+        <div class="quick-amounts">
+          @for (amt of quickAmounts; track amt) {
+            <button type="button" class="quick-btn" [class.selected]="amount === amt" (click)="amount = amt; errors.amount = null">₹{{ amt }}</button>
+          }
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Donation For</label>
+        <input type="text" [(ngModel)]="donationFor" placeholder="e.g. Education, Food, General (optional)" maxlength="200" />
+      </div>
+      <div class="form-group">
+        <label>Notes <span class="optional">(optional)</span></label>
+        <textarea [(ngModel)]="notes" placeholder="Any message with your donation" rows="3" maxlength="1000"></textarea>
+      </div>
+      @if (message) {
+        <p [ngClass]="{ success: success, error: !success }">{{ message }}</p>
+      }
+      <button type="button" class="btn-pay" (click)="initiatePayment()" [disabled]="isLoading">
+        {{ isLoading ? 'Processing...' : '💳 Proceed to Pay ₹' + (amount || 0) }}
+      </button>
+    </div>
+
+  </div>
+</div>

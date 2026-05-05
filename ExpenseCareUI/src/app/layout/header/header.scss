@@ -1,0 +1,193 @@
+/* src/app/shared/header/header.scss */
+
+.header {
+  height: 60px;
+  background: #fff;
+  border-bottom: 1px solid #e8edf2;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  gap: 2rem;
+  box-shadow: 0 1px 4px rgba(15, 37, 68, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ─── Logo ─── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logo-icon {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, #1a3a6b, #1976d2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f2544;
+  letter-spacing: -0.01em;
+}
+
+/* ─── Nav ─── */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+
+  a {
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #5a7a9a;
+    text-decoration: none;
+    transition: all 0.15s;
+
+    &:hover {
+      color: #0f2544;
+      background: #f0f6fb;
+    }
+
+    &.active {
+      color: #1565c0;
+      background: #e3f2fd;
+      font-weight: 600;
+    }
+  }
+}
+
+/* ─── Right side ─── */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Bell button */
+.bell-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  background: #f4f8fc;
+  border: 1px solid #e0eaf2;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #5a7a9a;
+  transition: all 0.15s;
+
+  &:hover {
+    background: #e3f2fd;
+    color: #1565c0;
+    border-color: #bbdefb;
+  }
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #e53935;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  border: 2px solid #fff;
+}
+
+/* User pill */
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f4f8fc;
+  border: 1px solid #e0eaf2;
+  border-radius: 20px;
+  padding: 0.3rem 0.75rem 0.3rem 0.35rem;
+}
+
+.user-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a3a6b, #1976d2);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.donor-avatar {
+    background: linear-gradient(135deg, #c62828, #e91e63);
+  }
+}
+
+.user-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0f2544;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Logout */
+.logout {
+  padding: 0.4rem 1rem;
+  background: none;
+  border: 1px solid #e0eaf2;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #5a7a9a;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+
+  &:hover {
+    background: #fce4ec;
+    border-color: #f48fb1;
+    color: #c62828;
+  }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
+  .logo-name { display: none; }
+  .user-label { display: none; }
+
+  .nav a {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.82rem;
+  }
+}

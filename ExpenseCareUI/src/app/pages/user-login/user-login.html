@@ -1,0 +1,62 @@
+<div class="page">
+  <div class="bg-layer"></div>
+
+   
+
+  <div class="card">
+
+  <div class="back-wrap">
+  <a routerLink="/" class="back-link">← Back</a>
+</div>
+    <div class="card-icon">🤲</div>
+    <h2 class="card-title">Donor Login</h2>
+    <p class="card-sub">Access your donation history</p>
+
+
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <div class="input-wrap">
+        <span class="input-icon">✉️</span>
+        <input
+          type="email"
+          class="form-input"
+          [(ngModel)]="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+        />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <div class="input-wrap">
+        <span class="input-icon">🔑</span>
+        <input
+          type="password"
+          class="form-input"
+          [(ngModel)]="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+        />
+      </div>
+    </div>
+
+    @if (errorMessage) {
+      <div class="status-msg error">⚠️ {{ errorMessage }}</div>
+    }
+
+    <button class="btn-submit" (click)="login()" [disabled]="isLoading">
+      @if (isLoading) { <span class="spinner">⟳</span> }
+      @else { <span>Sign In →</span> }
+    </button>
+
+  <a routerLink="/sign-up" class="signUp-link">Dont have an account? Sign Up</a>
+
+
+    <div class="divider"><span>or</span></div>
+
+    <button class="btn-secondary" (click)="goToAdminLogin()">
+      🛡️ Login as Admin / Trustee
+    </button>
+  </div>
+</div>

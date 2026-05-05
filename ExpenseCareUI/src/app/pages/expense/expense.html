@@ -1,0 +1,63 @@
+<div class="page-shell">
+  <div class="bg-layer"></div>
+  <div class="page-inner">
+
+    <div class="page-header">
+      <div><h2>{{ editingId ? 'Edit Expense' : 'New Expense' }}</h2></div>
+    </div>
+
+    @if (message()) {
+      <div class="alert" [class.alert-success]="success" [class.alert-error]="!success">
+        {{ message() }}
+      </div>
+    }
+
+    <div class="card form-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Expense type <span class="req">*</span></label>
+          <select [(ngModel)]="form.expenseType">
+            <option value="Temple">Temple</option>
+            <option value="OldAgeHome">Old age home</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Amount (₹) <span class="req">*</span></label>
+          <input type="number" [(ngModel)]="form.amount" placeholder="0.00" min="0.01" />
+        </div>
+        <div class="form-group">
+          <label>Expense date <span class="req">*</span></label>
+          <input type="date" [(ngModel)]="form.expenseDate" />
+        </div>
+        <div class="form-group">
+          <label>Attach Image</label>
+          <input type="text" [(ngModel)]="form.attachImage" />
+        </div>
+        <div class="form-group">
+          <label>Entry by <span class="req">*</span></label>
+          <input type="text" [(ngModel)]="form.entryBy" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <input type="text" [ngModel]="form.status" disabled />
+        </div>
+        <div class="form-group full-col">
+          <label>Description <span class="req">*</span></label>
+          <textarea [(ngModel)]="form.description" placeholder="Brief description of the expense..." rows="2"></textarea>
+        </div>
+        <div class="form-group full-col">
+          <label>Notes</label>
+          <textarea [(ngModel)]="form.notes" placeholder="Additional remarks..." rows="3"></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn" (click)="resetForm()">Cancel</button>
+        <button class="btn btn-primary" (click)="submit()" [disabled]="loading()">
+          {{ loading() ? 'Saving...' : editingId ? 'Update Expense' : 'Save Expense' }}
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,96 @@
+<div class="page">
+  <div class="bg-layer"></div>
+ 
+
+  <div class="card">
+
+  <div class="back-wrap">
+  <a routerLink="/" class="back-link">← Back</a>
+</div>
+    <div class="card-icon">🛡️</div>
+    <h2 class="card-title">Admin Login</h2>
+    <p class="card-sub">Trustee &amp; Admin access via OTP</p>
+
+
+
+    @if (!otpSent) {
+      <div class="form-group">
+        <label class="form-label">Mobile Number</label>
+        <div class="input-wrap">
+          <span class="input-icon">📱</span>
+          <input
+            type="tel"
+            class="form-input"
+            [(ngModel)]="mobileNumber"
+            placeholder="10-digit mobile number"
+            maxlength="10"
+            (keypress)="allowOnlyDigits($event)"
+            autocomplete="tel"
+          />
+        </div>
+        @if (validationError) {
+          <span class="field-error">{{ validationError }}</span>
+        }
+      </div>
+
+      @if (message) {
+        <div class="status-msg" [class.error]="!success">{{ message }}</div>
+      }
+
+      <button class="btn-submit" (click)="requestOtp()" [disabled]="isLoading">
+        @if (isLoading) { <span class="spinner">⟳</span> }
+        @else { <span>Send OTP →</span> }
+      </button>
+    
+    }
+
+    @if (otpSent) {
+      <div class="otp-hint">
+        OTP sent to <strong>+91 {{ mobileNumber }}</strong>
+        <button class="link-btn" (click)="goBack()">Change</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Enter OTP</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔢</span>
+          <input
+            type="tel"
+            class="form-input otp-input"
+            [(ngModel)]="otp"
+            placeholder="4 – 6 digit OTP"
+            maxlength="6"
+            (keypress)="allowOnlyDigits($event)"
+            autocomplete="one-time-code"
+          />
+        </div>
+        @if (otpError) {
+          <span class="field-error">{{ otpError }}</span>
+        }
+      </div>
+
+      @if (message) {
+        <div class="status-msg" [class.error]="!success">{{ message }}</div>
+      }
+
+      <button class="btn-submit" (click)="verifyOtp()" [disabled]="isLoading">
+        @if (isLoading) { <span class="spinner">⟳</span> }
+        @else { <span>Verify &amp; Sign In →</span> }
+      </button>
+
+      <div class="resend-row">
+        @if (!canResend) {
+          <span class="resend-timer">Resend OTP in {{ resendTimer }}s</span>
+        } @else {
+          <button class="link-btn" (click)="resendOtp()">Resend OTP</button>
+        }
+      </div>
+    }
+
+    <div class="divider"><span>or</span></div>
+
+    <button class="btn-secondary" (click)="goToDonorLogin()">
+      🤲 Login as Donor
+    </button>
+  </div>
+</div>

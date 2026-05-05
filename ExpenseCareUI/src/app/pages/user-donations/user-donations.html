@@ -1,0 +1,45 @@
+<div class="page-shell">
+  <div class="bg-layer"></div>
+  <div class="page-inner">
+
+    <div class="page-header">
+      <h2>My Donations</h2>
+      <button type="button" class="btn-donate" (click)="router.navigate(['/user-donate'])">+ New Donation</button>
+    </div>
+
+    @if (isLoading) {
+      <div class="loading">Loading your donations...</div>
+    }
+
+    @if (!isLoading && donations.length === 0) {
+      <div class="empty">
+        <p>💝 You haven't made any donations yet.</p>
+        <button type="button" class="btn-donate" (click)="router.navigate(['/user-donate'])">Make your first donation</button>
+      </div>
+    }
+
+    @if (!isLoading && donations.length > 0) {
+      <div class="donations-list">
+        @for (d of donations; track d.id) {
+          <div class="donation-card">
+            <div class="card-top">
+              <div class="donor-info">
+                <span class="donor-name">{{ d.donorName }}</span>
+                <span class="donation-for">{{ d.donationFor || 'General' }}</span>
+              </div>
+              <span class="amount">₹{{ d.amount | number:'1.2-2' }}</span>
+            </div>
+            <div class="card-bottom">
+              <span class="payment-mode">{{ d.paymentMode }}</span>
+              <span class="date">{{ d.donationDate | date:'dd MMM yyyy' }}</span>
+              <span class="status" [ngClass]="{'status-pending': d.status === 'Pending', 'status-approved': d.status === 'Approved'}">
+                {{ d.status === 'Approved' ? '✓ Approved' : '⏳ Pending' }}
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+</div>

@@ -1,0 +1,130 @@
+<div class="page-shell">
+  <div class="bg-layer"></div>
+  <div class="page-inner">
+
+    <div class="page-header">
+      <div><h2>Reports</h2></div>
+    </div>
+
+    @if (toast()) {
+      <div class="toast" [class.toast-success]="toastSuccess" [class.toast-error]="!toastSuccess">
+        <span>{{ toastSuccess ? '✓' : '✕' }}</span>
+        <span>{{ toast() }}</span>
+      </div>
+    }
+
+    <div class="card filter-bar">
+      <div class="filter-group">
+        <label>Type</label>
+        <div class="toggle-group">
+          <button [class.active]="type() === 'donation'" (click)="setType('donation')">Donations</button>
+          <button [class.active]="type() === 'expense'" (click)="setType('expense')">Expenses</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>Period</label>
+        <div class="toggle-group">
+          <button [class.active]="filterMode() === 'monthly'" (click)="setMode('monthly')">Monthly</button>
+          <button [class.active]="filterMode() === 'yearly'" (click)="setMode('yearly')">Yearly</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>Year</label>
+        <select [(ngModel)]="selectedYear" (ngModelChange)="applyFilter()">
+          @for (y of years; track y) { <option [value]="y">{{ y }}</option> }
+        </select>
+      </div>
+      @if (filterMode() === 'monthly') {
+        <div class="filter-group">
+          <label>Month</label>
+          <select [(ngModel)]="selectedMonth" (ngModelChange)="applyFilter()">
+            @for (m of months; track m.val) { <option [value]="m.val">{{ m.label }}</option> }
+          </select>
+        </div>
+      }
+      <div class="filter-group total-box">
+        <label>Total</label>
+        <div class="total-value">₹{{ total | number }}</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>{{ type() === 'donation' ? 'Donation' : 'Expense' }} Records</h3>
+        <span class="count-badge">{{ filtered().length }} records</span>
+      </div>
+      <div class="table-wrap">
+        @if (type() === 'donation') {
+          <table class="table">
+            <thead>
+              <tr><th>Donation date</th><th>Donor name</th><th>Amount</th><th>Mode</th><th>For</th><th>Entry by</th><th>Entry date</th><th>Status</th><th>Approved by</th><th>Approved date</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+              @for (d of filtered(); track d.id ?? $index) {
+                <tr>
+                  <td>{{ (d.donationDate | date:'dd MMM yyyy') || '-'}}</td>
+                  <td>{{ d.donorName }}</td>
+                  <td>₹{{ d.amount | number }}</td>
+                  <td>{{ d.paymentMode }}</td>
+                  <td>{{ d.donationFor || '—' }}</td>
+                  <td>{{ d.entryBy }}</td>
+                  <td>{{ d.entryAt | date:'dd MMM yyyy'}}</td>
+                  <td><span class="pill" [class.pill-green]="d.status==='Approved'" [class.pill-amber]="d.status==='Pending'" [class.pill-red]="d.status==='Rejected'">{{ d.status }}</span></td>
+                  <td>{{d.ApprovedBy || '-'}}</td>
+                  <td>{{d.ApprovedAt || '-'}}</td>
+                  <td class="actions">
+                    @if (d.status === 'Pending') {
+                      <button class="icon-btn edit" title="Edit" (click)="onEdit(d)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                      </button>
+                      <button class="icon-btn delete" title="Delete" (click)="onDelete(d.id, d.donorName + ' donation')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                      </button>
+                    }
+                  </td>
+                </tr>
+              } @empty {
+                <tr><td colspan="11" class="empty">No records found for this period.</td></tr>
+              }
+            </tbody>
+          </table>
+        }
+        @if (type() === 'expense') {
+          <table class="table">
+            <thead>
+              <tr><th>Date</th><th>Type</th><th>Amount</th><th>Description</th><th>Entry by</th><th>Entry date</th><th>Status</th><th>Approved by</th><th>Approved date</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+              @for (e of filtered(); track e.id ?? $index) {
+                <tr>
+                  <td>{{ e.expenseDate | date:'dd MMM yyyy' }}</td>
+                  <td>{{ e.expenseType }}</td>
+                  <td>₹{{ e.amount | number }}</td>
+                  <td>{{ e.description }}</td>
+                  <td>{{ e.entryBy }}</td>
+                  <td>{{ e.entryAt | date:'dd MMM yyyy'}}</td>
+                  <td><span class="pill" [class.pill-green]="e.status==='Approved'" [class.pill-amber]="e.status==='Pending'" [class.pill-red]="e.status==='Rejected'">{{ e.status }}</span></td>
+                  <td>{{e.ApprovedBy || '-'}}</td>
+                  <td>{{e.ApprovedAt || '-'}}</td>
+                  <td class="actions">
+                    @if (e.status === 'Pending') {
+                      <button class="icon-btn edit" title="Edit" (click)="onEdit(e)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                      </button>
+                      <button class="icon-btn delete" title="Delete" (click)="onDelete(e.id, e.expenseType + ' expense')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                      </button>
+                    }
+                  </td>
+                </tr>
+              } @empty {
+                <tr><td colspan="10" class="empty">No records found for this period.</td></tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>

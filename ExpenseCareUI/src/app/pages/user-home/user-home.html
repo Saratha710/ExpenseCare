@@ -1,0 +1,28 @@
+<div class="page-shell">
+  <div class="bg-layer"></div>
+  <div class="page-inner">
+
+    <div class="page-header">
+      <div>
+        <h2>Welcome, {{ auth.userName }} 👋</h2>
+        <p>Manage your donations easily from here</p>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card" (click)="router.navigate(['/user-donate'])">
+        <div class="card-icon">💝</div>
+        <h3>Make a Donation</h3>
+        <p>Contribute to a cause you care about</p>
+        <button type="button" class="btn">Donate Now</button>
+      </div>
+      <div class="card" (click)="router.navigate(['/user-donations'])">
+        <div class="card-icon">📋</div>
+        <h3>My Donations</h3>
+        <p>View all your previous donations and their status</p>
+        <button type="button" class="btn btn-outline">View History</button>
+      </div>
+    </div>
+
+  </div>
+</div>
