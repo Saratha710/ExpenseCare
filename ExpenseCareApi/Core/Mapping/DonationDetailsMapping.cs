@@ -10,7 +10,7 @@ public class DonationDetailsMapping : Profile
     {
         CreateMap<CreateDonationDetailsDto, DonationDetails>()
             .ForMember(dest => dest.Id, opt => opt.Ignore()) // DB generates
-            .ForMember(dest => dest.UserId, opt => opt.Ignore()) // from JWT later
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src=> src.UserId)) // from JWT later
             .ForMember(dest => dest.EntryBy, opt => opt.Ignore()) // from JWT later
             .ForMember(dest => dest.EntryAt, opt => opt.Ignore()) // server sets
             .ForMember(dest => dest.Status, opt => opt.Ignore()) // server sets "Pending"

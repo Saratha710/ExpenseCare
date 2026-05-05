@@ -15,6 +15,7 @@ public class CreateDonationDetailsDto
     public string? Notes { get; set; }
     public string EntryBy { get; set; } = string.Empty;
     public DateTime EntryAt { get; set; } = DateTime.Now;
+    public int UserId { get; set; }
 
 }
 
