@@ -64,6 +64,6 @@ export class HeaderComponent implements OnInit {
     const isUser = this.auth.isUser;
     this.auth.clearSession();
     // redirect to landing page — not login
-    this.router.navigate(['/']);
+    this.router.navigate(['/'], {replaceUrl:true});
   }
 }

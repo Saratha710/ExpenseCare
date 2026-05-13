@@ -6,7 +6,7 @@
   <div class="card">
 
   <div class="back-wrap">
-  <a routerLink="/" class="back-link">← Back</a>
+  <a routerLink="/" class="back-link">Home</a>
 </div>
     <div class="card-icon">🤲</div>
     <h2 class="card-title">Donor Login</h2>
@@ -14,15 +14,16 @@
 
 
     <div class="form-group">
-      <label class="form-label">Email Address</label>
+      <label class="form-label">User name/Email/Mobile</label>
       <div class="input-wrap">
-        <span class="input-icon">✉️</span>
         <input
-          type="email"
+        type="text"
           class="form-input"
-          [(ngModel)]="email"
-          placeholder="you@example.com"
+          [(ngModel)]="inputValue"
+          placeholder="User name, email or mobile number"
+          maxlength="30"
           autocomplete="email"
+          (input)="errorMessage = ''"
         />
       </div>
     </div>
@@ -30,14 +31,23 @@
     <div class="form-group">
       <label class="form-label">Password</label>
       <div class="input-wrap">
-        <span class="input-icon">🔑</span>
         <input
-          type="password"
+          [type]="showPassword ? 'text' : 'password'"
           class="form-input"
           [(ngModel)]="password"
           placeholder="••••••••"
+          maxlength="20"
           autocomplete="current-password"
+          (keydown.enter)="login()"
         />
+        <button
+          type="button"
+          class="link-btn"
+          style="padding: 0 0.75rem; font-size: 0.8rem;"
+          tabindex="-1"
+          (click)="showPassword = !showPassword">
+          {{ showPassword ? 'Hide' : 'Show' }}
+        </button>
       </div>
     </div>
 
@@ -45,18 +55,18 @@
       <div class="status-msg error">⚠️ {{ errorMessage }}</div>
     }
 
-    <button class="btn-submit" (click)="login()" [disabled]="isLoading">
+    <button class="btn-submit" (click)="login()" [disabled]="isLoading || !inputValue.trim() || !password.trim()">
       @if (isLoading) { <span class="spinner">⟳</span> }
       @else { <span>Sign In →</span> }
     </button>
 
-  <a routerLink="/sign-up" class="signUp-link">Dont have an account? Sign Up</a>
+  <a routerLink="/sign-up" class="signUp-link">Don't have an account? Sign Up</a>
 
 
-    <div class="divider"><span>or</span></div>
+    <!-- <div class="divider"><span>or</span></div>
 
     <button class="btn-secondary" (click)="goToAdminLogin()">
       🛡️ Login as Admin / Trustee
-    </button>
+    </button> -->
   </div>
 </div>

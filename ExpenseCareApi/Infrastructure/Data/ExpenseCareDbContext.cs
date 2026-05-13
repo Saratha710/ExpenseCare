@@ -13,5 +13,6 @@ public class ExpenseCareDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<DonationDetails> Donations { get; set; }
     public DbSet<ExpenseDetails> Expenses { get; set; }
+    public DbSet<UpiSettings> UpiSettings { get; set; }
 
 }

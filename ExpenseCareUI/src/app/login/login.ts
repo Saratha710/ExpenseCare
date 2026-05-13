@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject , ViewChild, ElementRef, viewChild} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
@@ -17,13 +17,14 @@ export class LoginComponent {
   private http   = inject(HttpClient);
   private router = inject(Router);
 
+
   mobileNumber:    string  = '';
   otp:             string  = '';
   otpSent:         boolean = false;
   message:         string  = '';
   success:         boolean = false;
   isLoading:       boolean = false;
-  validationError: string  = '';
+  validationError:  string  | null = null;
   otpError:        string  = '';
   maxOtpAttempts:  number  = 3;
   otpAttempts:     number  = 0;
@@ -33,18 +34,15 @@ export class LoginComponent {
   private timerInterval: any;
   private MaxApiRetries: number = 3;
 
+  @ViewChild('otpInput') otpInput!: ElementRef;
+
   async requestOtp() {
     const mobile = this.mobileNumber.trim();
 
-    if (!mobile) {
-      this.validationError = 'Mobile number is required';
-      return;
-    }
-    if (!/^\d{10}$/.test(mobile)) {
-      this.validationError = 'Enter a valid 10-digit mobile number';
-      return;
-    }
+     this.onMobileInput();
 
+     if(this.validationError) return;
+ 
     this.validationError = '';
     this.isLoading = true;
     this.message   = 'Sending OTP...';
@@ -58,10 +56,19 @@ export class LoginComponent {
       this.message = 'OTP sent successfully!';
       this.otpSent = true;
       this.startResendTimer();
-    } catch {
+
+      setTimeout(() => {
+        this.otpInput?.nativeElement.focus();
+      }, 100);
+    } 
+    catch(error : any) {
       this.success = false;
-      this.message = 'Failed to send OTP. Please try again.';
-    } finally {
+      this.message = error.error?.setMessage
+            ?? error.error
+            ?? error.message
+            ?? 'Failed to send OTP. Please try again.';
+    } 
+    finally {
       this.isLoading = false;
     }
   }
@@ -97,7 +104,11 @@ export class LoginComponent {
       this.auth.setSession({
         userId:   res.userId   ?? res.UserId,
         userName: res.name     ?? res.Name ?? res.mobile ?? res.Mobile,
-        role:     res.role     ?? res.Role ?? 'User'
+        role:     res.role     ?? res.Role ?? 'User',
+        mobile:  res.mobile   ?? res.Mobile ?? '',
+        address: res.address ?? res.Address ?? '',
+        accessToken: res.accessToken ?? '',
+        refreshToken: res.refreshToken ?? ''
       });
 
       this.success = true;
@@ -147,10 +158,6 @@ export class LoginComponent {
     this.requestOtp();
   }
 
-  allowOnlyDigits(e: KeyboardEvent) {
-    if (!/\d/.test(e.key)) e.preventDefault();
-  }
-
   private retryRequest<T>(apiCall: () => any, retries: number): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       const attempt = (remaining: number) => {
@@ -165,4 +172,28 @@ export class LoginComponent {
       attempt(retries);
     });
   }
+  
+  allowOnlyDigits(e: KeyboardEvent) {
+    if (!/\d/.test(e.key)) e.preventDefault();
+  }
+
+  onMobileInput() {
+    const mobile = this.mobileNumber ?? '';
+    if(!mobile) {
+      this.validationError = 'Please enter a valid 10-digit mobile number';
+      return;
+    }
+    this.validationError = /^\d{10}$/.test(mobile) ? null 
+    : 'Please enter a valid 10-digit mobile number';
+  }
+
+  onMobileBlur() {
+    const mobile = this.mobileNumber ?? '';
+    if(!mobile) {
+      this.validationError = null;
+      return;
+    }
+    this.onMobileInput();
+  }
+
 }

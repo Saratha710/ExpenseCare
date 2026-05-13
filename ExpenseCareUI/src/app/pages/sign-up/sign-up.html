@@ -1,1 +1,116 @@
-<p>sign-up works!</p>
+<div class="login-page">
+  <div class="login-container">
+<div class="back-wrap">
+  <a routerLink="/" class="back-link">Home</a>
+</div>
+
+    <h2>Create account</h2>
+    <p class="subtitle">Sign up to start donating</p>
+
+    <div class="form-group">
+      <label for="fullName">Full name <span style="color:#ef5350">*</span></label>
+      <input id="fullName" type="text" [(ngModel)]="form.fullName"
+        placeholder="Your full name" maxlength="80"
+        [class.input-error]="errors['fullName']"
+        (blur)="validate('fullName')" />
+      @if (errors['fullName']) { <p class="error">{{ errors['fullName'] }}</p> }
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Mobile Number
+          <span style="color:#ef5350">*</span></label>
+          <input
+            type="tel"
+            class="form-input"
+            [(ngModel)]="form.mobile"
+            placeholder="10-digit mobile number"
+            maxlength="10"
+            (keypress)="allowOnlyDigits($event) ; message = ''"
+            autocomplete="tel"
+            (focus)="onMobileInput()"
+            (input)="onMobileInput(); message = ''"
+            (blur)="onMobileBlur()" />
+       
+         @if (errors['mobile']) { <p class="error">{{ errors['mobile'] }}</p> }
+      </div>
+
+
+    <div class="form-group">
+      <label for="userName">Username</label>
+      <input id="userName" type="text" [(ngModel)]="form.userName"
+        placeholder="Choose a username" maxlength="50"
+        
+         />
+      <!-- @if (errors['userName']) { <p class="error">{{ errors['userName'] }}</p> } -->
+    </div>
+
+     <div class="form-group">
+  <label class="form-label">Email </label>
+  <div class="input-wrap">
+    <span class="input-icon">✉️</span>
+    <input type="email" class="form-input"
+      [(ngModel)]="form.email"
+      placeholder="your@email.com"
+      autocomplete="email"
+      (blur)="validate('email')"
+      (input)="errors['email'] && validate('email')" />
+  </div>
+  @if (errors['email']) { <span class="field-error">{{ errors['email'] }}</span> }
+</div>
+
+<div class="form-group">
+  <label for="address">Address</label>
+  <input id="address" type="text" [(ngModel)]="form.address"
+    placeholder="Your address" maxlength="200" />
+</div>
+
+    <div class="form-group">
+      <label for="password">Password <span style="color:#ef5350">*</span></label>
+      <div class="password-wrapper">
+        <input id="password" [type]="showPassword ? 'text' : 'password'"
+          [(ngModel)]="form.password" placeholder="Min 8 characters" maxlength="30"
+          [class.input-error]="errors['password']"
+          (focus)="validate('password')"
+          (input)="validate('password')"
+          (blur)="validate('password')" />
+        <button type="button" class="toggle-pass" (click)="showPassword = !showPassword" tabindex="-1">
+          {{ showPassword ? 'Hide' : 'Show' }}
+        </button>
+      </div>
+      @if (errors['password']) { <p class="error">{{ errors['password'] }}</p> }
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirm password <span style="color:#ef5350">*</span></label>
+      <div class="password-wrapper">
+        <input id="confirmPassword" [type]="showConfirm ? 'text' : 'password'"
+          [(ngModel)]="form.confirmPassword" placeholder="Re-enter password" maxlength="100"
+          [class.input-error]="errors['confirmPassword']"
+          (focus)="validate('confirmPassword')"
+          (input)="validate('confirmPassword')"
+          (blur)="validate('confirmPassword')" />
+       
+            @if (form.confirmPassword) {
+             <button type="button" class="toggle-pass" disabled tabindex="-1">
+               {{ form.password === form.confirmPassword ? '✔️' : '❌' }}
+             </button>
+            }
+      
+
+      </div>
+      @if (errors['confirmPassword']) { <p class="error">{{ errors['confirmPassword'] }}</p> }
+    </div>
+
+    @if (message) {
+      <p [ngClass]="{ success: success, error: !success }">{{ message }}</p>
+    }
+
+    <button type="button" class="btn-primary" (click)="submit()" [disabled]="isLoading || !form.fullName.trim() || !form.mobile.trim() || !form.password.trim() || !form.confirmPassword.trim()">
+      {{ isLoading ? 'Creating account...' : 'Create account' }}
+    </button>
+
+    <p class="admin-link">
+      Already have an account? <a routerLink="/user-login">Sign in</a>
+    </p>
+  </div>
+   </div>

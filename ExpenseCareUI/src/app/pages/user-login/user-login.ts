@@ -16,16 +16,17 @@ export class UserLoginComponent {
   private auth   = inject(AuthService);
   private router = inject(Router);
 
-  email:        string  = '';
+  inputValue:        string  = '';
   password:     string  = '';
   errorMessage: string  = '';
   isLoading:    boolean = false;
+  showPassword: boolean = false;
 
   async login() {
     this.errorMessage = '';
 
-    if (!this.email.trim()) {
-      this.errorMessage = 'Email is required';
+    if (!this.inputValue.trim() ) {
+      this.errorMessage = 'Please enter your user name, email or mobile number';
       return;
     }
     if (!this.password.trim()) {
@@ -37,16 +38,20 @@ export class UserLoginComponent {
 
     try {
       const res = await firstValueFrom(
-        this.auth.userLogin(this.email.trim(), this.password)
+        this.auth.userLogin(this.inputValue.trim(), this.password)
       );
 
       this.auth.setSession({
         userId:   res.userId   ?? res.UserId,
         userName: res.name     ?? res.Name ?? res.email ?? res.Email,
-        role:     res.role     ?? res.Role ?? 'User'
+        role:     res.role     ?? res.Role ?? 'User',
+        mobile:  res.mobile   ?? res.Mobile ?? '',
+        address: res.address ?? res.Address ?? '',
+        accessToken: res.accessToken ?? '',
+        refreshToken: res.refreshToken ?? ''
       });
 
-      this.router.navigate(['/user-home']);
+      this.router.navigate(['/user-donation']);
 
     } catch (err: any) {
       this.errorMessage = err?.error?.message || 'Invalid email or password.';
@@ -55,7 +60,4 @@ export class UserLoginComponent {
     }
   }
 
-  goToAdminLogin() {
-    this.router.navigate(['/login']);
-  }
 }

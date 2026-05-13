@@ -10,19 +10,25 @@ export const routes: Routes = [
   { path: '',           loadComponent: () => import('./pages/landing/landing').then(m => m.LandingComponent) },
   { path: 'login',      component: LoginComponent },
   { path: 'user-login', loadComponent: () => import('./pages/user-login/user-login').then(m => m.UserLoginComponent) },
+  { path: 'sign-up',        loadComponent: () => import('./pages/sign-up/sign-up').then(m => m.SignUpComponent) },
+
 
   // admin/trustee — protected by authGuard
   { path: 'home',     loadComponent: () => import('./pages/home/home').then(m => m.HomeComponent),         canActivate: [authGuard] },
   { path: 'donation', loadComponent: () => import('./pages/donation/donation').then(m => m.DonationComponent), canActivate: [authGuard] },
-  { path: 'expense',  loadComponent: () => import('./pages/expense/expense').then(m => m.ExpenseComponent),  canActivate: [adminGuard] },
-  { path: 'reports',  loadComponent: () => import('./pages/reports/reports').then(m => m.ReportsComponent),  canActivate: [adminGuard] },
-  { path: 'approve',  loadComponent: () => import('./pages/approve/approve').then(m => m.ApproveComponent),  canActivate: [adminGuard] },
+  { path: 'expense',  loadComponent: () => import('./pages/expense/expense').then(m => m.ExpenseComponent),  canActivate: [authGuard] },
+  { path: 'reports',  loadComponent: () => import('./pages/reports/reports').then(m => m.ReportsComponent),  canActivate: [authGuard] },
+ 
+  //admin-only
+   { path: 'approve',  loadComponent: () => import('./pages/approve/approve').then(m => m.ApproveComponent),  canActivate: [adminGuard] },
+  { path: 'upi-settings', loadComponent: () => import('./pages/upi-settings/upi-settings').then(m => m.UpiSettingsComponent), canActivate: [adminGuard] },
 
-  // user/donor — protected by userGuard
-  { path: 'user-home',      loadComponent: () => import('./pages/user-home/user-home').then(m => m.UserHomeComponent),           canActivate: [userGuard] },
+  // user/donor 
+  //{ path: 'user-home',      loadComponent: () => import('./pages/user-home/user-home').then(m => m.UserHomeComponent),           canActivate: [userGuard] },
+  {path: 'user-home', redirectTo: 'user-donation', pathMatch: 'full' },
   { path: 'user-donations', loadComponent: () => import('./pages/user-donations/user-donations').then(m => m.UserDonationsComponent), canActivate: [userGuard] },
-  { path: 'user-donate',    loadComponent: () => import('./pages/user-donation/user-donation').then(m => m.UserDonateComponent),     canActivate: [userGuard] },
-  { path: 'sign-up',        loadComponent: () => import('./pages/sign-up/sign-up').then(m => m.SignUpComponent) },
+  { path: 'user-donation',    loadComponent: () => import('./pages/user-donation/user-donation').then(m => m.UserDonateComponent),     canActivate: [userGuard] },
+ 
   // catch all → landing
   { path: '**', redirectTo: '' }
 ];

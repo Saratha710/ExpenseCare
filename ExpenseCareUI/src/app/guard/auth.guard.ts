@@ -12,11 +12,12 @@ export const authGuard: CanActivateFn = () => {
     return false;
   }
 
-  // user trying to access admin pages → user home
+  // user trying to access admin/trustee pages → user home
   if (auth.isUser) {
     router.navigate(['/user-home']);
     return false;
   }
 
+  //Admin or Trustee allow
   return true;
 };

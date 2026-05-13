@@ -2,6 +2,7 @@ using ExpenseCareApi.Core.Interfaces;
 using ExpenseCareApi.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using ExpenseCareApi.Core.Models;
+using ExpenseCareApi.Core.DTOs;
 
 namespace ExpenseCareApi.Infrastructure.Repositories;
 
@@ -81,12 +82,54 @@ public class DonationRepository : IDonationRepository
 
         await _context.SaveChangesAsync();
     }
-    public async Task<List<DonationDetails>> GetByUserIdAsync(int userId)
+    public async Task<List<DonationDetails>> GetByUserIdAsync(string mobile)
     {
         return await _context.Donations
-            .Where(x => x.UserId == userId)
-            .OrderByDescending(x => x.EntryAt)
+            .Where(x => x.DonorMobile == mobile)
+            .OrderByDescending(x => x.DonationDate)
             .ToListAsync();
     }
+
+    public async Task RejectAsync(int id, string rejectedBy)
+{
+    var entity = await _context.Donations.FindAsync(id);
+    if (entity == null) return;
+
+    entity.Status     = "Rejected";
+    entity.ApprovedBy = rejectedBy;
+    entity.ApprovedAt = DateTime.UtcNow.ToString("yyyy-MM-dd");
+
+    await _context.SaveChangesAsync();
+}
+
+public async Task ApproveAllAsync(List<int> ids, string approvedBy)
+{
+    var donations = await _context.Donations
+        .Where(d => ids.Contains(d.Id))
+        .ToListAsync();
+
+    foreach (var d in donations)
+    {
+        d.Status     = "Approved";
+        d.ApprovedBy = approvedBy;
+        d.ApprovedAt = DateTime.UtcNow.ToString("yyyy-MM-dd");
+    }
+
+    await _context.SaveChangesAsync();
+}
+
+public async Task<UserDonorDto?> GetDonorByMobileAsync(string mobile)
+{
+    return await _context.Users
+        .Where(u => u.MobileNumber == mobile)
+        .Select(u => new UserDonorDto
+        {
+            UserId   = u.Id,
+            FullName = u.Name,
+            Mobile   = u.MobileNumber,
+            Address  = u.Address
+        })
+        .FirstOrDefaultAsync();
+}
 
 }

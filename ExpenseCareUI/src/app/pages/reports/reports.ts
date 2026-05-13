@@ -41,6 +41,7 @@ export class ReportsComponent implements OnInit {
     this.donationSvc.getAll().subscribe(d => { this.allDonations = d; this.applyFilter(); });
     this.expenseSvc.getAll().subscribe(e => { this.allExpenses = e; this.applyFilter(); });
 
+    const state = window.history.state;
     const returnState = window.history.state?.returnState;
 
   if (returnState) {
@@ -48,6 +49,11 @@ export class ReportsComponent implements OnInit {
     this.filterMode.set(returnState.filterMode);
     this.selectedYear = returnState.selectedYear;
     this.selectedMonth = returnState.selectedMonth;
+  }
+
+  if(state?.editSuccess)
+  {
+    this.showResult(state.editMessage ?? 'Record updated successfully.', true);
   }
 
   this.applyFilter();
@@ -102,28 +108,41 @@ export class ReportsComponent implements OnInit {
 }
 
 
-toast = signal('');
-toastSuccess = true;
+popup = signal<{
+  show: boolean;
+  mode: 'confirm' | 'result';
+  message: string;
+  success: boolean;
+  pendingAction: (() => void) | null;
+}>({ show: false, mode: 'result', message: '', success: true, pendingAction: null });
 
-showToast(msg: string, ok: boolean) {
-  this.toastSuccess = ok;
-  this.toast.set(msg);
-  setTimeout(() => this.toast.set(''), 3000);
+showConfirm(message: string, action: () => void) {
+  this.popup.set({ show: true, mode: 'confirm', message, success: true, pendingAction: action });
 }
 
-onDelete(id: number, name:string) {
-  if (!confirm('Are you sure about deleting this record? The record will be permanently deleted.')) return;
+showResult(message: string, ok: boolean) {
+  this.popup.set({ show: true, mode: 'result', message, success: ok, pendingAction: null });
+}
 
-  const obs = this.type() === 'donation'
-    ? this.donationSvc.delete(id)
-    : this.expenseSvc.delete(id);
+closePopup() {
+  this.popup.set({ show: false, mode: 'result', message: '', success: true, pendingAction: null });
+}
 
+confirmAction() {
+  const action = this.popup().pendingAction;
+  this.closePopup();
+  if (action) action();
+}
+
+onDelete(id: number, name: string) {
+  this.showConfirm(`Delete this ${this.type()} record permanently?`, () => {
+    const obs = this.type() === 'donation'
+      ? this.donationSvc.delete(id)
+      : this.expenseSvc.delete(id);
     obs.subscribe({
-    next: () => {
-      this.showToast(`The ${this.type()} record has been deleted successfully.`, true);
-      this.applyFilter();
-    },
-    error: () => this.showToast('Delete failed. Please try again.', false)
+      next: () => { this.showResult(`Record deleted successfully.`, true); this.applyFilter(); },
+      error: () => this.showResult('Delete failed. Please try again.', false)
+    });
   });
 }
 }

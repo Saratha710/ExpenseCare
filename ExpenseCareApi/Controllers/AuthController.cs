@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ExpenseCareApi.Core.DTOs;
 using ExpenseCareApi.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace ExpenseCareApi.Controllers;
+
 
 [ApiController]
 [Route("api/[controller]")]
@@ -30,9 +32,9 @@ public class AuthController : ControllerBase
         var (success, message) = await _service.RequestOtpAsync(dto.MobileNumber);
 
         if (!success)
-            return NotFound(message);
+            return BadRequest(message);
 
-        return Ok(new { message });
+        return Ok(message);
     }
 
     [HttpPost("verify-otp")]
@@ -57,5 +59,31 @@ public class AuthController : ControllerBase
         return Ok(data);
     }
 
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
+    {
+        if (dto.UserName == null || string.IsNullOrWhiteSpace(dto.UserName))
+        {
+            dto.UserName = dto.FullName;
+        }
+        var (success, message, data) = await _service.RegisterAsync(dto);
+        if (!success) return BadRequest(new { message });
+        return Ok(new { message, data });
+    }
+
+[HttpPost("refresh")]
+public async Task<IActionResult> Refresh([FromBody] RefreshTokenDto dto)
+{
+    var (success, message, data) = await _service.RefreshTokenAsync(dto.RefreshToken);
+    if (!success) return Unauthorized(new { message });
+    return Ok(data);
+}
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout([FromBody] LogoutDto dto)
+    {
+        await _service.LogoutAsync(dto.UserId);
+        return Ok(new { message = "Logged out successfully" });
+    }
 
 }

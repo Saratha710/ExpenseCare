@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Razorpay.Api;
 using ExpenseCareApi.Core.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExpenseCareApi.Controllers;
 
+[Authorize(Roles = "Admin, Trustee, User")]
 [ApiController]
 [Route("api/[controller]")]
 public class RazorpayController : ControllerBase
@@ -23,6 +25,11 @@ public class RazorpayController : ControllerBase
         var keySecret = _config["Razorpay:KeySecret"];
 
         var client = new RazorpayClient(keyId, keySecret);
+
+        if(dto.Amount < 50)
+         {
+            return BadRequest(new { message = "Minimum donation amount is ₹50." });
+         }
 
         var options = new Dictionary<string, object>
         {

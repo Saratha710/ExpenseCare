@@ -16,6 +16,8 @@ public interface IDonationService
     Task<bool> UpdateAsync(int id, UpdateDonationDto dto);
     Task<bool> DeleteAsync(int id);
     Task<bool> ApproveAsync(int id, string approvedBy);
-    Task<List<GetDonationDetailsDto>> GetByUserIdAsync(int userId);
-
+    Task<List<GetDonationDetailsDto>> GetByUserIdAsync(string mobile);
+    Task<bool> RejectAsync(int id, string rejectedBy);
+    Task<bool> ApproveAllAsync(List<int> ids, string approvedBy);
+    Task<UserDonorDto?> GetDonorByMobileAsync(string mobile);
 }

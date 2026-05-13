@@ -1,0 +1,81 @@
+<div class="page-shell">
+  <div class="bg-layer"></div>
+  <div class="page-inner">
+
+    <div class="page-header">
+      <h2>Payment Settings</h2>
+    </div>
+
+    <div class="card form-card">
+
+      <!-- UPI Section -->
+      <div class="section-title">
+        <span class="section-icon">📱</span> UPI Details
+      </div>
+
+      <div class="form-group">
+        <label>UPI ID <span class="req">*</span></label>
+        <input type="text" [(ngModel)]="upiId"
+          placeholder="e.g. expensecare@upi"
+          maxlength="100" />
+      </div>
+
+      <div class="form-group">
+        <label>Display Name</label>
+        <input type="text" [(ngModel)]="displayName"
+          placeholder="e.g. ExpenseCare Donations"
+          maxlength="100" />
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- Bank Section -->
+      <div class="section-title">
+        <span class="section-icon">🏦</span> Bank Account Details
+      </div>
+
+      <div class="form-group">
+        <label>Account Holder Name</label>
+        <input type="text" [(ngModel)]="accountHolderName"
+          placeholder="e.g. John Doe / ExpenseCare Trust"
+          maxlength="100" />
+      </div>
+
+      <div class="form-group">
+        <label>Bank Name</label>
+        <input type="text" [(ngModel)]="bankName"
+          placeholder="e.g. State Bank of India"
+          maxlength="100" />
+      </div>
+
+      <div class="form-group">
+        <label>Account Number</label>
+        <input type="text" [(ngModel)]="bankAccountNumber"
+          placeholder="e.g. 1234567890"
+          maxlength="20" />
+      </div>
+
+      <div class="form-group">
+        <label>IFSC Code</label>
+        <input type="text" [(ngModel)]="bankIfscCode"
+          placeholder="e.g. SBIN0001234"
+          maxlength="11"
+          style="text-transform: uppercase"
+          (input)="bankIfscCode = bankIfscCode.toUpperCase()" />
+      </div>
+
+      @if (message()) {
+        <div class="alert" [class.alert-success]="success" [class.alert-error]="!success">
+          {{ message() }}
+        </div>
+      }
+
+      <div class="form-actions">
+        <button class="btn btn-primary" (click)="save()" [disabled]="isLoading">
+          {{ isLoading ? 'Saving...' : 'Save Settings' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

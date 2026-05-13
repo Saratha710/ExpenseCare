@@ -1,4 +1,5 @@
 using ExpenseCareApi.Core.Models;
+using ExpenseCareApi.Core.DTOs;
 
 namespace ExpenseCareApi.Core.Interfaces;
 
@@ -15,5 +16,9 @@ public interface IDonationRepository
     Task UpdateAsync(DonationDetails entity);
     Task DeleteAsync(DonationDetails entity);
     Task ApproveAsync(int id, string approveBy);
-    Task<List<DonationDetails>> GetByUserIdAsync(int userId);
+    Task<List<DonationDetails>> GetByUserIdAsync(string mobile);
+
+    Task RejectAsync(int id, string rejectedBy);
+    Task ApproveAllAsync(List<int> ids, string approvedBy);
+    Task<UserDonorDto?> GetDonorByMobileAsync(string mobile);
 }

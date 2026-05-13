@@ -6,13 +6,43 @@
       <div><h2>Reports</h2></div>
     </div>
 
-    @if (toast()) {
-      <div class="toast" [class.toast-success]="toastSuccess" [class.toast-error]="!toastSuccess">
-        <span>{{ toastSuccess ? '✓' : '✕' }}</span>
-        <span>{{ toast() }}</span>
-      </div>
-    }
 
+@if (popup().show) {
+  <div class="popup-overlay" (click)="closePopup()">
+    <div class="popup-box" (click)="$event.stopPropagation()">
+
+      @if (popup().mode === 'confirm') {
+        <div class="popup-icon popup-icon-warn">
+             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+      <line x1="12" y1="9" x2="12" y2="13"/>
+      <line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+        </div>
+        <p class="popup-title">Are you sure?</p>
+        <p class="popup-msg">{{ popup().message }}</p>
+        <div class="popup-actions">
+          <button class="popup-btn popup-btn-ghost" (click)="closePopup()">Cancel</button>
+          <button class="popup-btn popup-btn-confirm" (click)="confirmAction()">Yes, proceed</button>
+        </div>
+      }
+
+    @if (popup().mode === 'result') {
+  <p class="popup-result-text"
+    [class.popup-result-success]="popup().success"
+    [class.popup-result-error]="!popup().success">
+    {{ popup().message }}
+  </p>
+  <button class="popup-btn"
+    [class.popup-btn-success]="popup().success"
+    [class.popup-btn-error]="!popup().success"
+    (click)="closePopup()">OK</button>
+}
+</div>
+</div>
+}
     <div class="card filter-bar">
       <div class="filter-group">
         <label>Type</label>
@@ -70,8 +100,8 @@
                   <td>{{ d.entryBy }}</td>
                   <td>{{ d.entryAt | date:'dd MMM yyyy'}}</td>
                   <td><span class="pill" [class.pill-green]="d.status==='Approved'" [class.pill-amber]="d.status==='Pending'" [class.pill-red]="d.status==='Rejected'">{{ d.status }}</span></td>
-                  <td>{{d.ApprovedBy || '-'}}</td>
-                  <td>{{d.ApprovedAt || '-'}}</td>
+                  <td>{{d.approvedBy || '-'}}</td>
+                  <td>{{d.approvedAt || '-'}}</td>
                   <td class="actions">
                     @if (d.status === 'Pending') {
                       <button class="icon-btn edit" title="Edit" (click)="onEdit(d)">
@@ -104,8 +134,8 @@
                   <td>{{ e.entryBy }}</td>
                   <td>{{ e.entryAt | date:'dd MMM yyyy'}}</td>
                   <td><span class="pill" [class.pill-green]="e.status==='Approved'" [class.pill-amber]="e.status==='Pending'" [class.pill-red]="e.status==='Rejected'">{{ e.status }}</span></td>
-                  <td>{{e.ApprovedBy || '-'}}</td>
-                  <td>{{e.ApprovedAt || '-'}}</td>
+                  <td>{{e.approvedBy || '-'}}</td>
+                  <td>{{e.approvedAt || '-'}}</td>
                   <td class="actions">
                     @if (e.status === 'Pending') {
                       <button class="icon-btn edit" title="Edit" (click)="onEdit(e)">

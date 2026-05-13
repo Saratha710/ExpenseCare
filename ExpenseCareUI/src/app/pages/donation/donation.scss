@@ -1,1 +1,34 @@
 @use '../../shared/shared-page' as *;
+
+.mobile-lookup-group {
+  grid-column: 1 / -1;  // full width row
+}
+
+.mobile-lookup-row {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 50%;
+  input { flex: 1; }
+}
+
+.btn-lookup {
+  padding: 0 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(125,211,252,0.3);
+  background: rgba(125,211,252,0.1);
+  color: #7dd3fc;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  &:hover:not(:disabled) { background: rgba(125,211,252,0.2); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+.lookup-status {
+  font-size: 0.75rem;
+  margin: 0.35rem 0 0;
+
+  &.found     { color: #4ade80; }
+  &.not-found { color: #fb923c; }
+}

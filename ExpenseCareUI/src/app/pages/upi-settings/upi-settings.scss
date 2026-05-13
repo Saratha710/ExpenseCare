@@ -1,0 +1,21 @@
+@use '../../shared/shared-page' as *;
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+
+  .section-icon { font-size: 1rem; }
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  margin: 1.25rem 0;
+}

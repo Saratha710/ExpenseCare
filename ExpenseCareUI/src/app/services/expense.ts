@@ -3,11 +3,13 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ExpenseDetailsDto } from '../models/expense.model';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
   private http = inject(HttpClient);
-  private api = 'http://localhost:5104/api/expense';
+  //private api = 'http://localhost:5104/api/expense';
+  private api = `${environment.apiUrl}/api/expense`;
 
   add(dto: ExpenseDetailsDto): Observable<ExpenseDetailsDto> {
       return this.http.post<ExpenseDetailsDto>(`${this.api}/add-expense`, dto);
@@ -43,4 +45,10 @@ export class ExpenseService {
   approve(id: number, approvedBy: string): Observable<void> {
     return this.http.put<void>(`${this.api}/approve/${id}`, { approvedBy });
   }
+  reject(id: number, rejectedBy: string): Observable<void> {
+  return this.http.put<void>(`${this.api}/reject/${id}`, { rejectedBy });
+}
+approveAll(ids: number[], approvedBy: string): Observable<void> {
+  return this.http.put<void>(`${this.api}/approve-all`, { ids, approvedBy });
+}
 }

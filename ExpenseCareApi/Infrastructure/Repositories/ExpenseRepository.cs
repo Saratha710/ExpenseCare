@@ -70,15 +70,43 @@ public class ExpenseRepository : IExpenseRepository
         _context.Expenses.Remove(entity);
         await _context.SaveChangesAsync();
     }
-     public async Task ApproveAsync(int id, string approvedBy)
+    public async Task ApproveAsync(int id, string approvedBy)
     {
         var entity = await _context.Expenses.FindAsync(id);
         if (entity == null) return;
 
-        entity.Status     = "Approved";
+        entity.Status = "Approved";
         entity.ApprovedBy = approvedBy;
-        entity.ApprovedAt = DateTime.UtcNow.ToString("yyyy-MM-dd"); 
+        entity.ApprovedAt = DateTime.UtcNow.ToString("yyyy-MM-dd");
 
         await _context.SaveChangesAsync();
     }
+    public async Task RejectAsync(int id, string rejectedBy)
+    {
+        var entity = await _context.Expenses.FindAsync(id);
+        if (entity == null) return;
+
+        entity.Status = "Rejected";
+        entity.ApprovedBy = rejectedBy;
+        entity.ApprovedAt = DateTime.UtcNow.ToString("yyyy-MM-dd");
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task ApproveAllAsync(List<int> ids, string approvedBy)
+    {
+        var expenses = await _context.Expenses
+            .Where(d => ids.Contains(d.Id))
+            .ToListAsync();
+
+        foreach (var d in expenses)
+        {
+            d.Status = "Approved";
+            d.ApprovedBy = approvedBy;
+            d.ApprovedAt = DateTime.UtcNow.ToString("yyyy-MM-dd");
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
 }

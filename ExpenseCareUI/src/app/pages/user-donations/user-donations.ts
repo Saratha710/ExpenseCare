@@ -25,7 +25,15 @@ export class UserDonationsComponent implements OnInit {
 
   loadMyDonations() {
     this.isLoading = true;
-    this.http.get<any[]>(`/api/donation/my-donations/${this.auth.userId}`)
+    const mobile= this.auth.userMobile;
+
+    if(!mobile){
+      this.donations = [];
+      this.isLoading = false;
+      return;
+    }
+
+    this.http.get<any[]>(`/api/donation/my-donations/${mobile}`)
       .subscribe({
         next: (data) => {
           this.donations = data;

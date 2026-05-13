@@ -1,5 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using ExpenseCareApi.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using ExpenseCareApi.Core.DTOs;
@@ -9,6 +10,7 @@ using ExpenseCareApi.Core.Interfaces;
 
 namespace ExpenseCareApi.Controllers;
 
+[Authorize(Roles = "Admin, Trustee)")]
 [ApiController]
 [Route("api/[controller]")]
 
@@ -82,8 +84,8 @@ public class ExpenseController : ControllerBase
     {
 
         if (year < 2000 || year > 2100) return BadRequest("Invalid year");
-        if (month < 1   || month > 12)  return BadRequest("Invalid month");
-        
+        if (month < 1 || month > 12) return BadRequest("Invalid month");
+
         var result = await _service.GetByMonthAsync(year, month);
 
         return Ok(result);
@@ -92,7 +94,7 @@ public class ExpenseController : ControllerBase
     [HttpGet("by-year/{year}")]
     public async Task<IActionResult> GetByYear(int year)
     {
-       
+
         if (year < 2000 || year > 2100) return BadRequest("Invalid year");
 
         var result = await _service.GetByYearAsync(year);
@@ -112,11 +114,25 @@ public class ExpenseController : ControllerBase
     [HttpPut("approve/{id}")]
     public async Task<IActionResult> Approve(int id, [FromBody] ApproveDto dto)
     {
-       var entity = await _service.ApproveAsync(id, dto.ApprovedBy);
+        var entity = await _service.ApproveAsync(id, dto.ApprovedBy);
         return Ok();
     }
 
 
- 
+    [HttpPut("reject/{id}")]
+    public async Task<IActionResult> Reject(int id, [FromBody] RejectDto dto)
+    {
+        var success = await _service.RejectAsync(id, dto.RejectedBy);
+        if (!success) return NotFound("Expense not found");
+        return Ok(new { message = "Expense rejected" });
+    }
+    
+    [HttpPut("approve-all")]
+    public async Task<IActionResult> ApproveAll([FromBody] ApproveAllDto dto)
+    {
+        await _service.ApproveAllAsync(dto.Ids, dto.ApprovedBy);
+        return Ok(new { message = $"{dto.Ids.Count} expenses approved" });
+    }
+    
  
 }

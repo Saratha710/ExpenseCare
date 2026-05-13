@@ -1,1 +1,90 @@
 @use '../../shared/shared-page' as *;
+
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-box {
+  background: #0f2447;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 2rem 2.25rem;
+  width: 300px;
+  text-align: center;
+}
+
+.popup-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+
+  &.popup-icon-success { background: rgba(74, 222, 128, 0.15); color: #86efac; }
+  &.popup-icon-error   { background: rgba(248, 113, 113, 0.15); color: #fca5a5; }
+  &.popup-icon-warn    { background: rgba(251, 191, 36, 0.15);  color: #fde68a; }
+}
+
+.popup-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 0.5rem;
+}
+
+.popup-msg {
+  font-size: 0.83rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 1.5rem;
+  line-height: 1.5;
+}
+
+.popup-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.popup-btn {
+  flex: 1;
+  padding: 0.55rem 0;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+
+  &.popup-btn-success {
+    background: rgba(74, 222, 128, 0.15);
+    border-color: rgba(74, 222, 128, 0.35);
+    color: #86efac;
+    &:hover { background: rgba(74, 222, 128, 0.25); }
+  }
+  &.popup-btn-error {
+    background: rgba(248, 113, 113, 0.12);
+    border-color: rgba(248, 113, 113, 0.3);
+    color: #fca5a5;
+    &:hover { background: rgba(248, 113, 113, 0.22); }
+  }
+  &.popup-btn-confirm {
+    background: rgba(125, 211, 252, 0.12);
+    border-color: rgba(125, 211, 252, 0.3);
+    color: #93c5fd;
+    &:hover { background: rgba(125, 211, 252, 0.22); }
+  }
+  &.popup-btn-ghost {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+    &:hover { background: rgba(255, 255, 255, 0.1); }
+  }
+}

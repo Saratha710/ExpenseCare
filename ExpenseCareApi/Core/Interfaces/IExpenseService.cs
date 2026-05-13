@@ -2,6 +2,7 @@ using System;
 using ExpenseCareApi.Core.DTOs;
 
 namespace ExpenseCareApi.Core.Interfaces;
+
 public interface IExpenseService
 {
     Task<GetExpenseDetailsDto> CreateAsync(CreateExpenseDto dto);
@@ -15,5 +16,7 @@ public interface IExpenseService
     Task<bool> UpdateAsync(int id, UpdateExpenseDto dto);
     Task<bool> DeleteAsync(int id);
     Task<bool> ApproveAsync(int id, string approvedBy);
-
+    
+    Task<bool> RejectAsync(int id, string rejectedBy);
+    Task<bool> ApproveAllAsync(List<int> ids, string approvedBy);
 }

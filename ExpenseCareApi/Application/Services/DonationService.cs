@@ -104,10 +104,31 @@ public class DonationService : IDonationService
         await _donationRepo.ApproveAsync(id, approvedBy);
         return true;
     }
-    public async Task<List<GetDonationDetailsDto>> GetByUserIdAsync(int userId)
+    public async Task<List<GetDonationDetailsDto>> GetByUserIdAsync(string mobile)
     {
-        var entities = await _donationRepo.GetByUserIdAsync(userId);
+        var entities = await _donationRepo.GetByUserIdAsync(mobile);
         return _mapper.Map<List<GetDonationDetailsDto>>(entities);
     }
+
+    public async Task<bool> RejectAsync(int id, string rejectedBy)
+{
+    var entity = await _donationRepo.GetByIdAsync(id);
+    if (entity == null)
+        return false;
+
+    await _donationRepo.RejectAsync(id, rejectedBy);
+    return true;
+}
+
+public async Task<bool> ApproveAllAsync(List<int> ids, string approvedBy)
+{
+    await _donationRepo.ApproveAllAsync(ids, approvedBy);
+    return true;
+}
+
+public async Task<UserDonorDto?> GetDonorByMobileAsync(string mobile)
+{
+    return await _donationRepo.GetDonorByMobileAsync(mobile);
+}
 
 }

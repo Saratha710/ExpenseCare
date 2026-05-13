@@ -1,1 +1,276 @@
 @use '../../shared/shared-page' as *;
+
+// ── Page 2 header ──────────────────────────────
+.pay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 0;
+}
+
+.back-btn {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.45);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  &:hover { color: rgba(255,255,255,0.75); }
+}
+
+.back-btn-inline {
+  align-self: center;
+  margin-top: 0.25rem;
+}
+
+.header-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+}
+
+// ── Donor strip ────────────────────────────────
+.donor-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(125,211,252,0.06);
+  border: 1px solid rgba(125,211,252,0.12);
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+  margin: 1rem 0;
+
+  .donor-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .donor-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .donor-meta {
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.4);
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .amount-pill {
+    background: rgba(125,211,252,0.12);
+    border: 1px solid rgba(125,211,252,0.25);
+    border-radius: 14px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #7dd3fc;
+    white-space: nowrap;
+  }
+}
+
+// ── Two choice buttons ─────────────────────────
+.pay-choose {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.pay-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+
+  .pay-opt-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .pay-opt-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 3px;
+  }
+
+  .pay-opt-sub {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.4);
+    margin: 0;
+  }
+
+  &.btn-upi-choose:hover {
+    background: rgba(74,222,128,0.1);
+    border-color: rgba(74,222,128,0.3);
+  }
+
+  &.btn-card-choose:hover {
+    background: rgba(82,143,240,0.12);
+    border-color: rgba(82,143,240,0.35);
+  }
+}
+
+// ── UPI panel ─────────────────────────────────
+.pay-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 0.25rem;
+}
+
+.qr-outer { display: flex; justify-content: center; }
+
+.qr-frame {
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  .qr-scan-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #1a1040;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+}
+
+.upi-qr {
+  width: 160px;
+  height: 160px;
+  display: block;
+}
+
+.upi-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+
+  span {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+}
+
+.upi-id-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+
+  .upi-id-icon {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .upi-id-text {
+    flex: 1;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .copy-btn {
+    font-size: 0.72rem;
+    color: #7dd3fc;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    &:hover { color: #bae6fd; }
+  }
+}
+
+.btn-upi {
+  background: rgba(74,222,128,0.15) !important;
+  border: 1px solid rgba(74,222,128,0.3) !important;
+  color: #4ade80 !important;
+  &:hover:not(:disabled) { background: rgba(74,222,128,0.25) !important; }
+}
+
+.pay-note {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+  margin: 0;
+}
+
+// ── Message ───────────────────────────────────
+.pay-message {
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  &.success { color: #86efac; }
+  &.error   { color: #fca5a5; }
+}
+
+// ── Bank Transfer panel ────────────────────────
+.bank-details-box {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.bank-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  gap: 0.5rem;
+
+  &:last-child { border-bottom: none; }
+
+  .bank-label {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.35);
+    flex-shrink: 0;
+    min-width: 110px;
+  }
+
+  .bank-value {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: right;
+  }
+}
+
+// ── Choice button — bank ───────────────────────
+.btn-bank-choose:hover {
+  background: rgba(251,191,36,0.1);
+  border-color: rgba(251,191,36,0.3);
+}

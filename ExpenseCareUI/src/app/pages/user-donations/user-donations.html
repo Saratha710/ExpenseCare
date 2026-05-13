@@ -4,7 +4,7 @@
 
     <div class="page-header">
       <h2>My Donations</h2>
-      <button type="button" class="btn-donate" (click)="router.navigate(['/user-donate'])">+ New Donation</button>
+      <button type="button" class="btn-donate" (click)="router.navigate(['/user-donation'])">+ New Donation</button>
     </div>
 
     @if (isLoading) {
@@ -14,7 +14,7 @@
     @if (!isLoading && donations.length === 0) {
       <div class="empty">
         <p>💝 You haven't made any donations yet.</p>
-        <button type="button" class="btn-donate" (click)="router.navigate(['/user-donate'])">Make your first donation</button>
+        <button type="button" class="btn-donate" (click)="router.navigate(['/user-donation'])">Make your first donation</button>
       </div>
     }
 

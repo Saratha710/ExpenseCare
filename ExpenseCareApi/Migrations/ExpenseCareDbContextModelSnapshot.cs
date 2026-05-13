@@ -148,6 +148,41 @@ namespace ExpenseCareApi.Migrations
                     b.ToTable("ExpenseDetails");
                 });
 
+            modelBuilder.Entity("ExpenseCareApi.Core.Models.UpiSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountHolderName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BankAccountNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BankIfscCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BankName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpiId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UpiSettings");
+                });
+
             modelBuilder.Entity("ExpenseCareApi.Core.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -155,6 +190,12 @@ namespace ExpenseCareApi.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsLoggedIn")
                         .HasColumnType("bit");

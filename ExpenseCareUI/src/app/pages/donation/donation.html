@@ -14,55 +14,107 @@
 
     <div class="card form-card">
       <div class="form-grid">
-        <div class="form-group">
-          <label>Donor name <span class="req">*</span></label>
-          <input type="text" [(ngModel)]="form.donorName" placeholder="Full name" />
+
+        <!-- MOBILE FIRST with lookup -->
+        <div class="form-group mobile-lookup-group">
+          <label>Mobile Number <span class="req">*</span></label>
+          <div class="mobile-lookup-row">
+            <input type="tel" [(ngModel)]="form.donorMobile"
+              placeholder="Enter 10-digit mobile"
+              maxlength="10"
+              [disabled]="editingId !== null"
+              (keypress)="allowOnlyDigits($event)"
+              (input)="onMobileLookupInput()" 
+              (keyup.enter)="lookupDonor()" /> 
+            <button type="button" class="btn-lookup"
+              (click)="lookupDonor()"
+              [disabled]="lookupLoading || editingId !== null">
+              {{ lookupLoading ? '...' : '🔍' }}
+            </button>
+          </div>
+          @if (mobileError) { <p class="error">{{ mobileError }}</p> }
+          @if (donorFound !== null) {
+            <p class="lookup-status" [class.found]="donorFound" [class.not-found]="!donorFound">
+              {{ donorFound ? '✓ Donor found — details auto-filled' : '✕ New donor — please fill details below' }}
+            </p>
+          }
         </div>
+
+        <!-- Donor name — disabled if found -->
         <div class="form-group">
-          <label>Mobile</label>
-          <input type="text" [(ngModel)]="form.donorMobile" placeholder="10-digit number" />
+          <label>Donor Name <span class="req">*</span></label>
+          <input type="text" [(ngModel)]="form.donorName"
+            placeholder="Full name"
+            [disabled]="donorFound === true && !editingId" />
         </div>
+
+        <!-- Address — disabled if found -->
+        <div class="form-group">
+          <label>Donor Address</label>
+          <input type="text" [(ngModel)]="form.donorAddress"
+            placeholder="Full address"
+            [disabled]="donorFound === true && !editingId" />
+        </div>
+
         <div class="form-group">
           <label>Amount (₹) <span class="req">*</span></label>
-          <input type="number" [(ngModel)]="form.amount" placeholder="0.00" min="0.01" />
+          <input type="number" [(ngModel)]="form.amount"
+            placeholder="Enter amount" min="50"
+            [class.input-error]="amountError"
+            [disabled]="fieldsLocked"
+            (focus)="onAmountInput()"
+            (input)="onAmountInput()" />
+          @if (amountError) { <p class="error">{{ amountError }}</p> }
+          <div class="quick-amounts">
+            @for (amt of quickAmounts; track amt) {
+              <button type="button" class="quick-btn"
+                [class.selected]="form.amount === amt"
+                [disabled]="fieldsLocked"
+                (click)="form.amount = amt; amountError = null;">
+                ₹{{ amt }}
+              </button>
+            }
+          </div>
         </div>
+
         <div class="form-group">
-          <label>Donation date</label>
-          <input type="date" [(ngModel)]="form.donationDate" />
+          <label>Donation Date</label>
+          <input type="date" [(ngModel)]="form.donationDate"
+            [disabled]="fieldsLocked"
+            #dateInput (click)="dateInput.showPicker()" />
         </div>
+
         <div class="form-group">
-          <label>Payment mode <span class="req">*</span></label>
-          <select [(ngModel)]="form.paymentMode">
+          <label>Payment Mode <span class="req">*</span></label>
+          <select [(ngModel)]="form.paymentMode" [disabled]="fieldsLocked">
             <option value="Cash">Cash</option>
             <option value="UPI">UPI</option>
             <option value="Bank Transfer">Bank Transfer</option>
             <option value="Cheque">Cheque</option>
           </select>
         </div>
+
         <div class="form-group">
-          <label>Donation for</label>
-          <input type="text" [(ngModel)]="form.donationFor" placeholder="Purpose of donation" />
+          <label>Donation For</label>
+          <input type="text" [(ngModel)]="form.donationFor"
+            placeholder="Purpose of donation"
+            [disabled]="fieldsLocked" />
         </div>
-        <div class="form-group">
-          <label>Donor address</label>
-          <input type="text" [(ngModel)]="form.donorAddress" placeholder="Full address" />
-        </div>
-        <div class="form-group">
-          <label>Entry by <span class="req">*</span></label>
-          <input type="text" [(ngModel)]="form.entryBy" placeholder="Your name" />
-        </div>
-        <div class="form-group">
-          <label>Status</label>
-          <input type="text" [ngModel]="form.status" placeholder="Pending" disabled />
-        </div>
+
         <div class="form-group full-col">
           <label>Notes</label>
-          <textarea [(ngModel)]="form.notes" placeholder="Any additional remarks..." rows="3"></textarea>
+          <textarea [(ngModel)]="form.notes"
+            placeholder="Any additional remarks..."
+            rows="3"
+            [disabled]="fieldsLocked"></textarea>
         </div>
+
       </div>
+
       <div class="form-actions">
         <button class="btn" (click)="resetForm()">Cancel</button>
-        <button class="btn btn-primary" (click)="submit()" [disabled]="loading()">
+        <button class="btn btn-primary" (click)="submit()"
+          [disabled]="loading() || fieldsLocked ">
           {{ loading() ? 'Saving...' : editingId ? 'Update Donation' : 'Save Donation' }}
         </button>
       </div>

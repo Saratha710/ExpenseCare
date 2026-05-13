@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
 
 export interface ExpenseRecord {
   id: number;
@@ -16,6 +17,7 @@ export interface ExpenseRecord {
 })
 export class ReportsService {
   private base = '/api/expenses'; // adjust to match your API
+  private api = `${environment.apiUrl}/api/donation`;
 
   constructor(private http: HttpClient) {}
 

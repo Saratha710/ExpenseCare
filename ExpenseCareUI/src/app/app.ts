@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './layout/header/header';
 import { AuthService } from './services/auth';
@@ -10,21 +10,29 @@ import { AuthService } from './services/auth';
   imports: [RouterOutlet, HeaderComponent],
   template: `
     <app-header />
-    <main class="main-content">
+    <main [class.main-content] = "auth.isLoggedIn()">
       <router-outlet />
     </main>
   `,
   styles: [`
-    .main-content { padding: 2rem; background: #f5f5f5; min-height: calc(100vh - 56px); }
+    .main-content { 
+      padding: 2rem; 
+      background: #f5f5f5; 
+      min-height: calc(100vh - 60px); }
   `]
 })
-export class App {
+export class App implements OnInit{
   
-  private auth = inject(AuthService);
+   auth = inject(AuthService);
     
   protected readonly title = signal('ExpenseCare');
 
   constructor() {
     this.auth.loadFromStorage();  //restore userId after refresh
   }
+
+  ngOnInit(){
+     this.auth.loadFromStorage();
+  }
+  
 }

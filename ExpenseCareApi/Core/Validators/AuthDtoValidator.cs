@@ -31,11 +31,9 @@ public class UserLoginValidator : AbstractValidator<UserLoginDto>
 {
     public UserLoginValidator()
     {
-        RuleFor(x => x.UserName)
-            .NotEmpty().WithMessage("Username is required")
-            .MinimumLength(3).WithMessage("Username must be at least 3 characters")
-            .MaximumLength(50).WithMessage("Username cannot exceed 50 characters")
-            .Matches(@"^[a-zA-Z0-9_]+$").WithMessage("Username can only contain letters, numbers, and underscores");
+        RuleFor(x => x.Identifier)
+            .NotEmpty().WithMessage("Username,email or mobile is required")
+            .MaximumLength(50).WithMessage("Username cannot exceed 50 characters");
 
         // login — basic checks only, BCrypt handles real verification
         RuleFor(x => x.Password)

@@ -13,11 +13,16 @@ export const adminGuard: CanActivateFn = () => {
 
   if (auth.isAdmin) return true;
 
+  if(auth.isTrustee) {
+    router.navigate(['/home']);
+    return false;
+  }
+
     if (auth.isUser) {
     router.navigate(['/user-home']);
     return false;
   }
 
-  router.navigate(['/login']);
+  router.navigate(['/home']);
   return false;
 };

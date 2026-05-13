@@ -30,7 +30,7 @@ public class ExpenseService : IExpenseService
         //entity.EntryBy = _currentUser.Name;
         //entity.UserId = _currentUser.Id;
         entity.Status = "Pending";
-         entity.EntryBy = string.IsNullOrWhiteSpace(dto.EntryBy) ? "Admin" : dto.EntryBy;
+        entity.EntryBy = string.IsNullOrWhiteSpace(dto.EntryBy) ? "Admin" : dto.EntryBy;
 
 
         var result = await _expenseRepo.CreateAsync(entity);
@@ -105,4 +105,22 @@ public class ExpenseService : IExpenseService
         await _expenseRepo.ApproveAsync(id, approvedBy);
         return true;
     }
+
+    public async Task<bool> RejectAsync(int id, string rejectedBy)
+    {
+        var entity = await _expenseRepo.GetByIdAsync(id);
+        if (entity == null)
+            return false;
+
+        await _expenseRepo.RejectAsync(id, rejectedBy);
+        return true;
+    }
+    public async Task<bool> ApproveAllAsync(List<int> ids, string approvedBy)
+    {
+        await _expenseRepo.ApproveAllAsync(ids, approvedBy);
+        return true;
+    }
+
+
+
 }

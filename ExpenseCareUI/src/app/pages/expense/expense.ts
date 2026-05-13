@@ -50,7 +50,7 @@ export class ExpenseComponent {
     this.loading.set(true);
     this.form.entryAt = new Date().toISOString().split('T')[0];
     this.form.userId = this.auth.userId;
-    this.form.entryBy = this.form.entryBy?.trim() || this.auth.userName;
+    this.form.entryBy =  this.auth.userName;
 
     const obs = this.editingId  // MOVED obs to after validation
       ? this.svc.update(this.editingId, this.form)
@@ -61,7 +61,10 @@ export class ExpenseComponent {
         this.loading.set(false);
         if (this.editingId) {
           this.router.navigate(['/reports'], {
-            state: { returnState: this.returnState }
+            state: { returnState: this.returnState,
+                  editSuccess: true,
+               editMessage: 'Donation updated successfully!'
+             }
           });
         } else {
           this.setMessage('Expense saved successfully!', true);

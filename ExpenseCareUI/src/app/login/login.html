@@ -1,11 +1,15 @@
 <div class="page">
   <div class="bg-layer"></div>
- 
+
+
 
   <div class="card">
 
-  <div class="back-wrap">
+  <!-- <div class="back-wrap">
   <a routerLink="/" class="back-link">← Back</a>
+</div> -->
+  <div class="back-wrap">
+  <a routerLink="/" class="back-link">Home</a>
 </div>
     <div class="card-icon">🛡️</div>
     <h2 class="card-title">Admin Login</h2>
@@ -24,8 +28,12 @@
             [(ngModel)]="mobileNumber"
             placeholder="10-digit mobile number"
             maxlength="10"
-            (keypress)="allowOnlyDigits($event)"
+            (keypress)="allowOnlyDigits($event) ; message = ''"
             autocomplete="tel"
+            (focus)="onMobileInput()"
+            (input)="onMobileInput(); message = ''"
+            (blur)="onMobileBlur()"
+            (keydown.enter)="requestOtp()"
           />
         </div>
         @if (validationError) {
@@ -33,6 +41,7 @@
         }
       </div>
 
+ 
       @if (message) {
         <div class="status-msg" [class.error]="!success">{{ message }}</div>
       }
@@ -45,10 +54,10 @@
     }
 
     @if (otpSent) {
-      <div class="otp-hint">
+      <!-- <div class="otp-hint">
         OTP sent to <strong>+91 {{ mobileNumber }}</strong>
         <button class="link-btn" (click)="goBack()">Change</button>
-      </div>
+      </div> -->
 
       <div class="form-group">
         <label class="form-label">Enter OTP</label>
@@ -58,10 +67,12 @@
             type="tel"
             class="form-input otp-input"
             [(ngModel)]="otp"
-            placeholder="4 – 6 digit OTP"
+            placeholder="Enter OTP"
             maxlength="6"
+            #otpInput
             (keypress)="allowOnlyDigits($event)"
             autocomplete="one-time-code"
+            (keydown.enter)="verifyOtp()"
           />
         </div>
         @if (otpError) {
@@ -87,10 +98,10 @@
       </div>
     }
 
-    <div class="divider"><span>or</span></div>
+    <!-- <div class="divider"><span>or</span></div>
 
     <button class="btn-secondary" (click)="goToDonorLogin()">
       🤲 Login as Donor
-    </button>
+    </button> -->
   </div>
 </div>

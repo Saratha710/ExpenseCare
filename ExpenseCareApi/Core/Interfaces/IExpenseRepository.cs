@@ -15,4 +15,7 @@ public interface IExpenseRepository
     Task UpdateAsync(ExpenseDetails entity);
     Task DeleteAsync(ExpenseDetails entity);
     Task ApproveAsync(int id, string approveBy);
+
+    Task RejectAsync(int id, string rejectedBy);
+    Task ApproveAllAsync(List<int> ids, string approvedBy);
 }

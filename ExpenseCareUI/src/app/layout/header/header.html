@@ -28,6 +28,7 @@
         @if (auth.isAdmin) {
           <a routerLink="/approve" routerLinkActive="active">Approvals</a>
         }
+        <a routerLink="/upi-settings">UPI Settings</a>
       </nav>
 
       <div class="header-right">
@@ -55,8 +56,8 @@
     <!-- USER / DONOR nav -->
     @if (auth.isUser) {
       <nav class="nav">
-        <a routerLink="/user-home"      routerLinkActive="active">Home</a>
-        <a routerLink="/user-donate"    routerLinkActive="active">Donate</a>
+        <!-- <a routerLink="/user-home"      routerLinkActive="active">Home</a> -->
+        <a routerLink="/user-donation"    routerLinkActive="active">Donate</a>
         <a routerLink="/user-donations" routerLinkActive="active">My Donations</a>
       </nav>
 

@@ -7,41 +7,214 @@
     </div>
 
     <div class="card form-card">
-      <div class="form-group">
-        <label>Donor Name</label>
-        <input type="text" [ngModel]="donorName" (ngModelChange)="onDonorNameInput($event)" placeholder="Your full name" maxlength="200" [class.input-error]="errors.donorName" />
-        @if (errors.donorName) { <p class="error">{{ errors.donorName }}</p> }
-      </div>
-      <div class="form-group">
-        <label>Mobile Number</label>
-        <input type="tel" [ngModel]="donorMobile" (ngModelChange)="onMobileInput($event)" placeholder="10-digit mobile number" maxlength="10" [class.input-error]="errors.donorMobile" />
-        @if (errors.donorMobile) { <p class="error">{{ errors.donorMobile }}</p> }
-      </div>
-      <div class="form-group">
-        <label>Donation Amount (₹)</label>
-        <input type="number" [(ngModel)]="amount" placeholder="Enter amount" min="1" [class.input-error]="errors.amount" />
-        @if (errors.amount) { <p class="error">{{ errors.amount }}</p> }
-        <div class="quick-amounts">
-          @for (amt of quickAmounts; track amt) {
-            <button type="button" class="quick-btn" [class.selected]="amount === amt" (click)="amount = amt; errors.amount = null">₹{{ amt }}</button>
-          }
+
+      @if (!showPayment) {
+
+        <div class="form-group">
+          <label>Donor Name <span class="req">*</span></label>
+          <input type="text" [ngModel]="donorName"
+            (ngModelChange)="onDonorNameInput($event)"
+            placeholder="Your full name" maxlength="200"
+            [class.input-error]="errors.donorName" />
+          @if (errors.donorName) { <p class="error">{{ errors.donorName }}</p> }
         </div>
-      </div>
-      <div class="form-group">
-        <label>Donation For</label>
-        <input type="text" [(ngModel)]="donationFor" placeholder="e.g. Education, Food, General (optional)" maxlength="200" />
-      </div>
-      <div class="form-group">
-        <label>Notes <span class="optional">(optional)</span></label>
-        <textarea [(ngModel)]="notes" placeholder="Any message with your donation" rows="3" maxlength="1000"></textarea>
-      </div>
-      @if (message) {
-        <p [ngClass]="{ success: success, error: !success }">{{ message }}</p>
+
+        <div class="form-group">
+          <label>Mobile Number <span class="req">*</span></label>
+          <input type="tel" [ngModel]="donorMobile"
+            (ngModelChange)="onMobileInput($event)"
+            placeholder="10-digit mobile number" maxlength="10"
+            [class.input-error]="errors.donorMobile"
+            (blur)="onMobileBlur()" />
+          @if (errors.donorMobile) { <p class="error">{{ errors.donorMobile }}</p> }
+        </div>
+
+        <div class="form-group">
+          <label>Donation Amount <span class="req">*</span> (₹)</label>
+          <input type="number" [(ngModel)]="amount"
+            placeholder="Enter amount (min ₹50)" min="50"
+            [class.input-error]="errors.amount"
+            (input)="onAmountInput()" />
+          @if (errors.amount) { <p class="error">{{ errors.amount }}</p> }
+          <div class="quick-amounts">
+            @for (amt of quickAmounts; track amt) {
+              <button type="button" class="quick-btn"
+                [class.selected]="amount === amt"
+                (click)="amount = amt; errors.amount = null">₹{{ amt }}</button>
+            }
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Donation For</label>
+          <input type="text" [(ngModel)]="donationFor"
+            placeholder="e.g. Education, Food, General (optional)"
+            maxlength="200" />
+        </div>
+
+        <div class="form-group">
+          <label>Address</label>
+          <textarea [(ngModel)]="donorAddress"
+            placeholder="Your address" rows="3" maxlength="200"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Notes</label>
+          <textarea [(ngModel)]="notes"
+            placeholder="Any message with your donation"
+            rows="3" maxlength="1000"></textarea>
+        </div>
+
+        <button type="button" class="btn-pay"
+          (click)="initiatePayment()"
+          [disabled]="isLoading">
+          💳 Proceed to Pay ₹{{ amount || 0 }}
+        </button>
+
       }
-      <button type="button" class="btn-pay" (click)="initiatePayment()" [disabled]="isLoading">
-        {{ isLoading ? 'Processing...' : '💳 Proceed to Pay ₹' + (amount || 0) }}
+
+      @if (showPayment) {
+
+        <div class="pay-header">
+          <button type="button" class="back-btn"
+            (click)="showPayment = false; message = ''; payMode = 'none'">
+            ← Edit details
+          </button>
+          <span class="header-title">Complete payment</span>
+          <div style="width: 80px"></div>
+        </div>
+
+        <div class="donor-strip">
+          <div class="donor-info">
+            <span class="donor-name">{{ donorName }}</span>
+            <span class="donor-meta">{{ donorMobile }}{{ donationFor ? ' · ' + donationFor : '' }}</span>
+          </div>
+          <div class="amount-pill">₹{{ amount }}</div>
+        </div>
+
+        @if (payMode === 'none') {
+          <div class="pay-choose">
+
+            <button type="button" class="pay-option-btn btn-upi-choose"
+              (click)="payMode = 'upi'">
+              <span class="pay-opt-icon">📱</span>
+              <div>
+                <p class="pay-opt-title">Pay via UPI / QR</p>
+                <p class="pay-opt-sub">GPay · PhonePe · Paytm · any UPI app</p>
+              </div>
+            </button>
+
+            @if (hasBankDetails) {
+      <button type="button" class="pay-option-btn btn-bank-choose"
+        (click)="payMode = 'bank'">
+        <span class="pay-opt-icon">🏦</span>
+        <div>
+          <p class="pay-opt-title">Pay via Bank Transfer</p>
+          <p class="pay-opt-sub">NEFT · RTGS · IMPS · direct transfer</p>
+        </div>
       </button>
+    }
+
+            <button type="button" class="pay-option-btn btn-card-choose"
+              (click)="payViaRazorpay()">
+              <span class="pay-opt-icon">💳</span>
+              <div>
+                <p class="pay-opt-title">Pay via Card / Net banking</p>
+                <p class="pay-opt-sub">Razorpay · auto-verified instantly</p>
+              </div>
+            </button>
+
+          </div>
+        }
+
+        @if (payMode === 'upi') {
+          <div class="pay-panel">
+
+            @if (showQr && qrDataUrl) {
+              <div class="qr-outer">
+                <div class="qr-frame">
+                  <span class="qr-scan-label">Scan to pay ₹{{ amount }}</span>
+                  <img [src]="qrDataUrl" alt="UPI QR Code" class="upi-qr" />
+                </div>
+              </div>
+            }
+
+            <div class="upi-badges">
+              <span>GPay</span><span>PhonePe</span>
+              <span>Paytm</span><span>BHIM</span><span>Any UPI app</span>
+            </div>
+
+            <div class="upi-id-row">
+              <span class="upi-id-icon">@</span>
+              <span class="upi-id-text">{{ upiId }}</span>
+              <button type="button" class="copy-btn" (click)="copyUpiId()">Copy</button>
+            </div>
+
+            <button type="button" class="btn-pay btn-upi"
+              (click)="confirmUpiPayment()" [disabled]="isLoading">
+              {{ isLoading ? 'Saving...' : "✅ I've paid via UPI" }}
+            </button>
+
+            <p class="pay-note">ℹ️ Admin will verify and approve your donation</p>
+
+            <button type="button" class="back-btn back-btn-inline"
+              (click)="payMode = 'none'">
+              ← Choose different method
+            </button>
+
+          </div>
+        }
+        @if (payMode === 'bank') {
+  <div class="pay-panel">
+
+    <div class="bank-details-box">
+      <div class="bank-detail-row">
+        <span class="bank-label">Account Holder</span>
+        <span class="bank-value">{{ accountHolderName }}</span>
+      </div>
+      <div class="bank-detail-row">
+        <span class="bank-label">Bank Name</span>
+        <span class="bank-value">{{ bankName }}</span>
+      </div>
+      <div class="bank-detail-row">
+        <span class="bank-label">Account Number</span>
+        <span class="bank-value">
+          {{ bankAccountNumber }}
+          <button type="button" class="copy-btn" (click)="copyText(bankAccountNumber)">Copy</button>
+        </span>
+      </div>
+      <div class="bank-detail-row">
+        <span class="bank-label">IFSC Code</span>
+        <span class="bank-value">
+          {{ bankIfscCode }}
+          <button type="button" class="copy-btn" (click)="copyText(bankIfscCode)">Copy</button>
+        </span>
+      </div>
     </div>
 
+    <button type="button" class="btn-pay btn-upi"
+      (click)="confirmBankPayment()" [disabled]="isLoading">
+      {{ isLoading ? 'Saving...' : "✅ I've transferred the amount" }}
+    </button>
+
+    <p class="pay-note">ℹ️ Admin will verify and approve your donation</p>
+
+    <button type="button" class="back-btn back-btn-inline"
+      (click)="payMode = 'none'">
+      ← Choose different method
+    </button>
+
+  </div>
+}
+
+        @if (message) {
+          <p class="pay-message" [ngClass]="{ success: success, error: !success }">
+            {{ message }}
+          </p>
+        }
+
+      }
+
+    </div>
   </div>
 </div>
