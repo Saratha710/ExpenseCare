@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://localhost:5104",
+    "target": "https://wonderful-glacier-0420dae00-preview.eastasia.7.azurestaticapps.net",
     "secure": false,
     "changeOrigin": true
   }
