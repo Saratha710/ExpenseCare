@@ -110,6 +110,7 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ExpenseCareDbContext>();
+    context.Database.Migrate();
     
     var existingUser = context.Users.FirstOrDefault(u => u.UserName == "testuser");
     if (existingUser == null)
