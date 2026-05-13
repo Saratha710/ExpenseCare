@@ -6,3 +6,4 @@ appsettings.Development.json
 **/.angular/
 **/dist/
 .DS_Store
+ExpenseCareUI/dist/
