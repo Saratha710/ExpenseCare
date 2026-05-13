@@ -7,3 +7,4 @@ appsettings.Development.json
 **/dist/
 .DS_Store
 ExpenseCareUI/dist/
+ExpenseCareUI/dist/
