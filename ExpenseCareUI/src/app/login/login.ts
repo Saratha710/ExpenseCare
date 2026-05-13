@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -50,7 +51,7 @@ export class LoginComponent {
 
     try {
       await this.retryRequest(
-        () => this.http.post('/api/auth/request-otp', { mobileNumber: mobile }, { responseType: 'text' }),
+        () => this.http.post(`${environment.apiUrl}/api/auth/request-otp`, { mobileNumber: mobile }, { responseType: 'text' }),
         this.MaxApiRetries
       );
       this.message = 'OTP sent successfully!';
@@ -97,7 +98,7 @@ export class LoginComponent {
 
     try {
       const res: any = await this.retryRequest(
-        () => this.http.post<any>('/api/auth/verify-otp', { mobileNumber: this.mobileNumber, otp: this.otp }),
+        () => this.http.post<any>(`${environment.apiUrl}/api/auth/verify-otp`, { mobileNumber: this.mobileNumber, otp: this.otp }),
         this.MaxApiRetries
       );
 

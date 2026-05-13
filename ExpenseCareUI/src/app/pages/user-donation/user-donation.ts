@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
 import * as QRCode from 'qrcode';
+import { environment } from '../../../environments/environment';
 
 declare var Razorpay: any;
 
@@ -53,7 +54,7 @@ hasBankDetails    = false;
   };
 
   ngOnInit(): void {
-    this.http.get<any>('/api/upisettings').subscribe({
+    this.http.get<any>(`${environment.apiUrl}/api/upisettings`).subscribe({
       next: (res) => {
         if (res?.upiId) {
           this.upiId   = res.upiId;
@@ -138,7 +139,7 @@ hasBankDetails    = false;
 
   confirmUpiPayment() {
     this.isLoading = true;
-    this.http.post('/api/donation/add-donation', {
+    this.http.post(`${environment.apiUrl}/api/donation/add-donation`, {
       userId:           this.userId,
       donorName:        this.donorName,
       donorMobile:      this.donorMobile,
@@ -166,7 +167,7 @@ hasBankDetails    = false;
   payViaRazorpay() {
     this.isLoading = true;
     this.message   = '';
-    this.http.post<any>('/api/razorpay/create-order', {
+    this.http.post<any>(`${environment.apiUrl}/api/razorpay/create-order`, {
       amount:    this.amount,
       userId:    this.auth.userId,
       donorName: this.donorName
@@ -219,7 +220,7 @@ hasBankDetails    = false;
 
   saveDonation(paymentId: string) {
     this.isLoading = true;
-    this.http.post('/api/donation/add-donation', {
+    this.http.post(`${environment.apiUrl}/api/donation/add-donation`, {
       userId:           this.userId,
       donorName:        this.donorName,
       donorMobile:      this.donorMobile,
@@ -260,7 +261,7 @@ hasBankDetails    = false;
   }
   confirmBankPayment() {
   this.isLoading = true;
-  this.http.post('/api/donation/add-donation', {
+  this.http.post(`${environment.apiUrl}/api/donation/add-donation`, {
     userId:           this.userId,
     donorName:        this.donorName,
     donorMobile:      this.donorMobile,

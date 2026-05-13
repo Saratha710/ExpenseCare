@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-signup',
@@ -96,7 +97,7 @@ errors: { [key: string]: string | null} = {};
     this.isLoading = true;
     this.message   = 'Creating account...';
 
-    this.http.post<{ data: { userId: string; name: string; role: string } }>('/api/auth/register', {
+    this.http.post<{ data: { userId: string; name: string; role: string } }>(`${environment.apiUrl}/api/auth/register`, {
       fullName:  this.form.fullName,
       mobileNumber:    this.form.mobile,
       userName:  this.form.userName || this.form.fullName,

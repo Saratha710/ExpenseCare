@@ -2,6 +2,7 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-upi-settings',
@@ -28,7 +29,7 @@ export class UpiSettingsComponent implements OnInit {
   isLoading = false;
 
   ngOnInit() {
-    this.http.get<any>('/api/upisettings').subscribe({
+    this.http.get<any>(`${environment.apiUrl}/api/upisettings`).subscribe({
       next: (res) => {
         if (res) {
           this.upiId             = res.upiId             ?? '';
@@ -50,7 +51,7 @@ export class UpiSettingsComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this.http.post<any>('/api/upisettings', {
+    this.http.post<any>(`${environment.apiUrl}/api/upisettings`, {
       upiId:             this.upiId.trim(),
       displayName:       this.displayName.trim()       || null,
       accountHolderName: this.accountHolderName.trim() || null,

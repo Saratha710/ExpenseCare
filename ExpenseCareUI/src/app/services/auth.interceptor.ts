@@ -3,13 +3,14 @@ import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from './auth';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
   // Skip adding token for auth endpoints
-  const isAuthEndpoint = req.url.includes('/api/auth/');
+  const isAuthEndpoint = req.url.includes(`${environment.apiUrl}/api/auth/`);
   const token = auth.accessToken;
 
   // Clone request and add Authorization header if token exists

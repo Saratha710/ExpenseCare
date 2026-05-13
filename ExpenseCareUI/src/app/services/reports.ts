@@ -16,7 +16,7 @@ export interface ExpenseRecord {
   providedIn: 'root'
 })
 export class ReportsService {
-  private base = '/api/expenses'; // adjust to match your API
+  private base = `${environment.apiUrl}/api/expenses`; // adjust to match your API
   private api = `${environment.apiUrl}/api/donation`;
 
   constructor(private http: HttpClient) {}

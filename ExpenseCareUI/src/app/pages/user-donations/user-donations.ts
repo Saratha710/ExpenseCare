@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-user-donations',
@@ -33,7 +34,7 @@ export class UserDonationsComponent implements OnInit {
       return;
     }
 
-    this.http.get<any[]>(`/api/donation/my-donations/${mobile}`)
+    this.http.get<any[]>(`${environment.apiUrl}/api/donation/my-donations/${mobile}`)
       .subscribe({
         next: (data) => {
           this.donations = data;
