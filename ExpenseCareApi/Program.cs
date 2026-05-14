@@ -26,14 +26,17 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
     {
-        policy.WithOrigins("http://localhost:4200", // your Angular dev URL
-              "https://wonderful-glacier-0420dae00.7.azurestaticapps.net",
-              "https://wonderful-glacier-0420dae00-preview.eastasia.7.azurestaticapps.net"
-             )
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy.WithOrigins(
+            "http://localhost:4200",
+            "https://wonderful-glacier-0420dae00.7.azurestaticapps.net",
+            "https://wonderful-glacier-0420dae00-preview.eastasia.7.azurestaticapps.net"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
     });
 });
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     { options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
