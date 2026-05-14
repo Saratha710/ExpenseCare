@@ -23,7 +23,8 @@ public class UpiSettingsController : ControllerBase
         if (dto == null) return Ok(null);
         return Ok(dto);
     }
-
+    
+    [Authorize(Roles ="Admin")]
     [HttpPost]
     public async Task<IActionResult> Save([FromBody] UpiSettingsDto dto)
     {
