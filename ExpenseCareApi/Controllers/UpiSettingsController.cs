@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseCareApi.Controllers;
 
-[Authorize(Roles ="Admin")]
 [ApiController]
 [Route("api/[controller]")]
 public class UpiSettingsController : ControllerBase
@@ -17,7 +16,6 @@ public class UpiSettingsController : ControllerBase
         _service = service;
     }
     
-    [Authorize(Roles = "Admin, Trustee, User")]
     [HttpGet]
     public async Task<IActionResult> Get()
     {
