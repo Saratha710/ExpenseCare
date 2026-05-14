@@ -10,7 +10,7 @@ using ExpenseCareApi.Core.Interfaces;
 
 namespace ExpenseCareApi.Controllers;
 
-[Authorize(Roles = "Admin, Trustee)")]
+[Authorize(Roles = "Admin,Trustee)")]
 [ApiController]
 [Route("api/[controller]")]
 

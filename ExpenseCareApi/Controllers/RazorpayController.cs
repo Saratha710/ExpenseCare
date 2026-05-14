@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ExpenseCareApi.Controllers;
 
-[Authorize(Roles = "Admin, Trustee, User")]
+[Authorize(Roles = "Admin,Trustee,User")]
 [ApiController]
 [Route("api/[controller]")]
 public class RazorpayController : ControllerBase

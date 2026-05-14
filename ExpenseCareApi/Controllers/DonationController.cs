@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ExpenseCareApi.Controllers;
 
-[Authorize(Roles ="Admin, Trustee)")]
+[Authorize(Roles ="Admin,Trustee)")]
 [ApiController]
 [Route("api/[controller]")]
 
@@ -23,7 +23,7 @@ public class DonationController : ControllerBase
         _service = service;
     }
 
-    [Authorize(Roles = "Admin, Trustee, User")]
+    [Authorize(Roles = "Admin,Trustee,User")]
     [HttpPost("add-donation")]
     public async Task<IActionResult> AddDonationDetails([FromBody] CreateDonationDetailsDto dto)
     {
@@ -123,7 +123,7 @@ public class DonationController : ControllerBase
         return Ok();
     }
 
-   [Authorize(Roles = "Admin, Trustee, User")]
+   [Authorize(Roles = "Admin,Trustee,User")]
     [HttpGet("my-donations/{mobile}")]
     public async Task<IActionResult> GetMyDonations(string mobile)
     {
