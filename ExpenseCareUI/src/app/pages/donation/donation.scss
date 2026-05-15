@@ -1,13 +1,18 @@
 @use '../../shared/shared-page' as *;
 
 .mobile-lookup-group {
-  grid-column: 1 / -1;  // full width row
+  grid-column: 1 / -1;
 }
 
 .mobile-lookup-row {
   display: flex;
   gap: 0.5rem;
   max-width: 50%;
+
+  @media (max-width: 600px) {
+    max-width: 100%;
+  }
+
   input { flex: 1; }
 }
 
@@ -21,6 +26,7 @@
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
+
   &:hover:not(:disabled) { background: rgba(125,211,252,0.2); }
   &:disabled { opacity: 0.4; cursor: not-allowed; }
 }

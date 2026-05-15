@@ -1,4 +1,3 @@
-// src/app/shared/header/header.ts
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -20,10 +19,10 @@ export class HeaderComponent implements OnInit {
   private router      = inject(Router);
   auth                = inject(AuthService);
 
-  pendingCount = signal(0);
+  pendingCount   = signal(0);
   isPreLoginPage = signal(false);
+  menuOpen       = signal(false);
 
-  // ALL pages that should NOT show the header
   private preLoginPages = ['/', '/login', '/user-login', ''];
 
   ngOnInit() {
@@ -33,15 +32,23 @@ export class HeaderComponent implements OnInit {
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: any) => {
         this.checkPage(e.urlAfterRedirects);
+        this.menuOpen.set(false);
       });
 
     if (this.auth.isAdmin) this.loadPendingCount();
   }
 
   private checkPage(url: string) {
-    // strip query params for comparison
     const path = url.split('?')[0];
     this.isPreLoginPage.set(this.preLoginPages.includes(path));
+  }
+
+  toggleMenu() {
+    this.menuOpen.set(!this.menuOpen());
+  }
+
+  closeMenu() {
+    this.menuOpen.set(false);
   }
 
   loadPendingCount() {
@@ -58,12 +65,12 @@ export class HeaderComponent implements OnInit {
 
   goToApprovals() {
     this.router.navigate(['/approve']);
+    this.closeMenu();
   }
 
   logout() {
-    const isUser = this.auth.isUser;
     this.auth.clearSession();
-    // redirect to landing page — not login
-    this.router.navigate(['/'], {replaceUrl:true});
+    this.router.navigate(['/'], { replaceUrl: true });
+    this.closeMenu();
   }
 }
