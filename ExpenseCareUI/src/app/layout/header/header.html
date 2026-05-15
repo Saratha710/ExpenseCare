@@ -1,6 +1,3 @@
-<!-- src/app/shared/header/header.html -->
-
-<!-- Header is completely hidden on landing / login / user-login pages -->
 @if (auth.isLoggedIn() && !isPreLoginPage()) {
 
   <header class="header">
@@ -18,17 +15,16 @@
       <span class="logo-name">ExpenseCare</span>
     </div>
 
-    <!-- ADMIN / TRUSTEE nav -->
     @if (!auth.isUser) {
       <nav class="nav">
-        <a routerLink="/home"     routerLinkActive="active">Home</a>
-        <a routerLink="/donation" routerLinkActive="active">Donation</a>
-        <a routerLink="/expense"  routerLinkActive="active">Expense</a>
-        <a routerLink="/reports"  routerLinkActive="active">Reports</a>
+        <a routerLink="/home"         routerLinkActive="active">Home</a>
+        <a routerLink="/donation"     routerLinkActive="active">Donation</a>
+        <a routerLink="/expense"      routerLinkActive="active">Expense</a>
+        <a routerLink="/reports"      routerLinkActive="active">Reports</a>
         @if (auth.isAdmin) {
-          <a routerLink="/approve" routerLinkActive="active">Approvals</a>
+          <a routerLink="/approve"    routerLinkActive="active">Approvals</a>
         }
-        <a routerLink="/upi-settings">UPI Settings</a>
+        <a routerLink="/upi-settings" routerLinkActive="active">UPI Settings</a>
       </nav>
 
       <div class="header-right">
@@ -53,11 +49,9 @@
       </div>
     }
 
-    <!-- USER / DONOR nav -->
     @if (auth.isUser) {
       <nav class="nav">
-        <!-- <a routerLink="/user-home"      routerLinkActive="active">Home</a> -->
-        <a routerLink="/user-donation"    routerLinkActive="active">Donate</a>
+        <a routerLink="/user-donation"  routerLinkActive="active">Donate</a>
         <a routerLink="/user-donations" routerLinkActive="active">My Donations</a>
       </nav>
 
@@ -70,6 +64,55 @@
       </div>
     }
 
+    <button class="menu-btn" (click)="toggleMenu()" aria-label="Toggle menu">
+      @if (menuOpen()) {
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      } @else {
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      }
+    </button>
+
   </header>
+
+  @if (menuOpen()) {
+    <div class="drawer-overlay" (click)="closeMenu()"></div>
+    <div class="drawer" [class.open]="menuOpen()">
+
+      <div class="drawer-user">
+        <span class="user-avatar" [class.donor-avatar]="auth.isUser">
+          {{ auth.userName?.charAt(0)?.toUpperCase() || 'A' }}
+        </span>
+        <span class="drawer-username">{{ auth.userName }}</span>
+      </div>
+
+      @if (!auth.isUser) {
+        <a routerLink="/home"         routerLinkActive="active" (click)="closeMenu()">Home</a>
+        <a routerLink="/donation"     routerLinkActive="active" (click)="closeMenu()">Donation</a>
+        <a routerLink="/expense"      routerLinkActive="active" (click)="closeMenu()">Expense</a>
+        <a routerLink="/reports"      routerLinkActive="active" (click)="closeMenu()">Reports</a>
+        @if (auth.isAdmin) {
+          <a routerLink="/approve"    routerLinkActive="active" (click)="closeMenu()">
+            Approvals
+            @if (pendingCount() > 0) {
+              <span class="drawer-badge">{{ pendingCount() }}</span>
+            }
+          </a>
+        }
+        <a routerLink="/upi-settings" routerLinkActive="active" (click)="closeMenu()">UPI Settings</a>
+      }
+
+      @if (auth.isUser) {
+        <a routerLink="/user-donation"  routerLinkActive="active" (click)="closeMenu()">Donate</a>
+        <a routerLink="/user-donations" routerLinkActive="active" (click)="closeMenu()">My Donations</a>
+      }
+
+      <button class="drawer-logout" (click)="logout()">Logout</button>
+
+    </div>
+  }
 
 }
