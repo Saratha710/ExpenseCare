@@ -19,9 +19,9 @@ export class HeaderComponent implements OnInit {
   private router      = inject(Router);
   auth                = inject(AuthService);
 
-  pendingCount   = signal(0);
+  pendingCount  = signal(0);
   isPreLoginPage = signal(false);
-  menuOpen       = signal(false);
+  menuOpen      = signal(false);
 
   private preLoginPages = ['/', '/login', '/user-login', ''];
 
@@ -43,13 +43,8 @@ export class HeaderComponent implements OnInit {
     this.isPreLoginPage.set(this.preLoginPages.includes(path));
   }
 
-  toggleMenu() {
-    this.menuOpen.set(!this.menuOpen());
-  }
-
-  closeMenu() {
-    this.menuOpen.set(false);
-  }
+  toggleMenu() { this.menuOpen.update(v => !v); }
+  closeMenu()  { this.menuOpen.set(false); }
 
   loadPendingCount() {
     forkJoin({
@@ -63,14 +58,11 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  goToApprovals() {
-    this.router.navigate(['/approve']);
-    this.closeMenu();
-  }
+  goToApprovals() { this.router.navigate(['/approve']); }
 
   logout() {
     this.auth.clearSession();
+    this.menuOpen.set(false);
     this.router.navigate(['/'], { replaceUrl: true });
-    this.closeMenu();
   }
 }

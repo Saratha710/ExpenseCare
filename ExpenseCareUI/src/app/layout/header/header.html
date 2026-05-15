@@ -64,29 +64,32 @@
       </div>
     }
 
-    <button class="menu-btn" (click)="toggleMenu()" aria-label="Toggle menu">
-      @if (menuOpen()) {
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      } @else {
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      }
+    <!-- Hamburger button — mobile only -->
+    <button class="menu-btn" (click)="toggleMenu()" aria-label="Open menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6"  x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
     </button>
 
   </header>
 
+  <!-- Drawer overlay -->
   @if (menuOpen()) {
     <div class="drawer-overlay" (click)="closeMenu()"></div>
-    <div class="drawer" [class.open]="menuOpen()">
+
+    <div class="drawer">
 
       <div class="drawer-user">
         <span class="user-avatar" [class.donor-avatar]="auth.isUser">
-          {{ auth.userName?.charAt(0)?.toUpperCase() || 'A' }}
+          {{ auth.userName?.charAt(0)?.toUpperCase() || 'U' }}
         </span>
         <span class="drawer-username">{{ auth.userName }}</span>
+        @if (auth.isAdmin && pendingCount() > 0) {
+          <span class="drawer-badge">{{ pendingCount() }}</span>
+        }
       </div>
 
       @if (!auth.isUser) {
@@ -95,12 +98,7 @@
         <a routerLink="/expense"      routerLinkActive="active" (click)="closeMenu()">Expense</a>
         <a routerLink="/reports"      routerLinkActive="active" (click)="closeMenu()">Reports</a>
         @if (auth.isAdmin) {
-          <a routerLink="/approve"    routerLinkActive="active" (click)="closeMenu()">
-            Approvals
-            @if (pendingCount() > 0) {
-              <span class="drawer-badge">{{ pendingCount() }}</span>
-            }
-          </a>
+          <a routerLink="/approve"    routerLinkActive="active" (click)="closeMenu()">Approvals</a>
         }
         <a routerLink="/upi-settings" routerLinkActive="active" (click)="closeMenu()">UPI Settings</a>
       }
@@ -111,7 +109,6 @@
       }
 
       <button class="drawer-logout" (click)="logout()">Logout</button>
-
     </div>
   }
 
