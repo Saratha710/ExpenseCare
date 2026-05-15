@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ExpenseCareApi.Controllers;
 
-[Authorize(Roles ="Admin,Trustee")]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 
@@ -32,6 +32,7 @@ public class DonationController : ControllerBase
         return CreatedAtAction(nameof(GetDonationById), new { id = donation.Id }, donation);
     }
 
+    [Authorize(Roles = "Admin,Trustee")]
     [HttpGet("get-Donation/{id}")]
     public async Task<IActionResult> GetDonationById(int id)
     {
@@ -46,6 +47,8 @@ public class DonationController : ControllerBase
         return Ok(donation);
     }
 
+
+    [Authorize(Roles = "Admin,Trustee")]
     [HttpPut("update-Donation/{id}")]
     public async Task<IActionResult> UpdateDonation(int id, [FromBody] UpdateDonationDto dto)
     {
@@ -59,6 +62,7 @@ public class DonationController : ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = "Admin,Trustee")]
     [HttpGet("get-allDonations")]
     public async Task<IActionResult> GetAllDonationDetails()
     {
@@ -69,6 +73,7 @@ public class DonationController : ControllerBase
 
     }
 
+    [Authorize(Roles = "Admin,Trustee")]
     [HttpDelete("delete-Donation/{id}")]
     public async Task<IActionResult> DeleteDonation(int id)
     {
@@ -84,6 +89,7 @@ public class DonationController : ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = "Admin,Trustee")]
     [HttpGet("by-month/{year}/{month}")]
     public async Task<IActionResult> GetByMonth(int year, int month)
     {
@@ -94,6 +100,7 @@ public class DonationController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin,Trustee")]
     [HttpGet("by-year/{year}")]
     public async Task<IActionResult> GetByYear(int year)
     {
@@ -103,6 +110,7 @@ public class DonationController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin,Trustee")]
     // GET /api/donation/pending
     [HttpGet("pending")]
     public async Task<IActionResult> GetPending()
@@ -149,6 +157,7 @@ public class DonationController : ControllerBase
         return Ok(new { message = $"{dto.Ids.Count} donations approved" });
     }
 
+   [Authorize(Roles = "Admin,Trustee")]
     [HttpGet("donor-by-mobile/{mobile}")]
     public async Task<IActionResult> GetDonorByMobile(string mobile)
     {
