@@ -1,6 +1,10 @@
+// =============================================
+// shared-page.scss — apply to all inner pages
+// =============================================
 $navy-deep: #0a1628;
 $navy-mid:  #0f2447;
 
+// --- Gradient background shell ---
 .page-shell {
   min-height: 100vh;
   position: relative;
@@ -11,7 +15,11 @@ $navy-mid:  #0f2447;
   position: fixed;
   inset: 0;
   z-index: 0;
-  background:
+    // background:
+    // radial-gradient(ellipse at 80% 100%, rgba(17, 153, 142, 0.25) 0%, transparent 60%),
+    // radial-gradient(ellipse at 20% 0%, rgba(45, 27, 105, 0.4) 0%, transparent 50%),
+    // linear-gradient(135deg, #2d1b69 0%, #1a1040 45%, #11998e 100%);
+    background:
     radial-gradient(ellipse 70% 50% at 50% 100%, rgba(125,211,252,0.2) 0%, transparent 70%),
     linear-gradient(170deg,
       #{$navy-deep} 0%,
@@ -30,12 +38,9 @@ $navy-mid:  #0f2447;
   max-width: 1200px;
   margin: 0 auto;
   color: rgba(255, 255, 255, 0.9);
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
 }
 
+// --- Page header ---
 .page-header {
   display: flex;
   align-items: center;
@@ -54,10 +59,6 @@ $navy-mid:  #0f2447;
     background-clip: text;
     letter-spacing: -0.02em;
     margin: 0;
-
-    @media (max-width: 768px) {
-      font-size: 1.35rem;
-    }
   }
 
   p {
@@ -67,6 +68,8 @@ $navy-mid:  #0f2447;
   }
 }
 
+
+// --- Cards ---
 .card {
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(24px);
@@ -82,10 +85,8 @@ $navy-mid:  #0f2447;
     0 1px 0 rgba(255, 255, 255, 0.08) inset;
   transition: border-color 0.2s;
 
-  &:hover { border-color: rgba(125, 211, 252, 0.28); }
-
-  @media (max-width: 768px) {
-    padding: 1rem;
+  &:hover {
+    border-color: rgba(125, 211, 252, 0.28);
   }
 }
 
@@ -115,15 +116,12 @@ $navy-mid:  #0f2447;
   }
 }
 
+// --- Stat cards (home dashboard) ---
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
-
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 .stat-card {
@@ -144,10 +142,6 @@ $navy-mid:  #0f2447;
     border-color: rgba(125, 211, 252, 0.3);
   }
 
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
-
   .stat-label {
     font-size: 0.75rem;
     color: rgba(255,255,255,0.45);
@@ -166,10 +160,6 @@ $navy-mid:  #0f2447;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 
-    @media (max-width: 480px) {
-      font-size: 1.4rem;
-    }
-
     &.negative {
       background: linear-gradient(135deg, #fff 40%, #f87171 100%);
       -webkit-background-clip: text;
@@ -179,6 +169,7 @@ $navy-mid:  #0f2447;
   }
 }
 
+// --- Badges ---
 .badge {
   display: inline-block;
   padding: 0.2rem 0.6rem;
@@ -192,32 +183,34 @@ $navy-mid:  #0f2447;
   &.badge-blue   { background: rgba(125,211,252,0.15); color: #7dd3fc; }
 }
 
-.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+// --- Tables ---
+.table-wrap { overflow-x: auto; }
 
 .table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
 
-  th {
-    color: rgba(255,255,255,0.55);
-    font-weight: 600;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 0.85rem 1rem;
-    text-align: left;
-    white-space: nowrap;
-  }
+ th {
+  color: rgba(255,255,255,0.55);  // was 0.35–0.5
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+   padding: 0.85rem 1rem;
+   text-align: left;
+}
 
-  td {
-    padding: 0.85rem 1rem;
-    color: rgba(255,255,255,0.88);
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    white-space: nowrap;
-  }
+td {
+  padding: 0.85rem 1rem;
+  color: rgba(255,255,255,0.88);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  white-space: nowrap;
+}
 
-  tbody tr:hover { background: rgba(255,255,255,0.04); }
+  tbody tr:hover {
+    background: rgba(255,255,255,0.04);
+  }
 
   .empty {
     text-align: center;
@@ -226,6 +219,7 @@ $navy-mid:  #0f2447;
   }
 }
 
+// --- Pills (status) ---
 .pill {
   display: inline-block;
   padding: 0.2rem 0.65rem;
@@ -238,6 +232,7 @@ $navy-mid:  #0f2447;
   &.pill-red    { background: rgba(248,113,113,0.15); color: #f87171; }
 }
 
+// --- Icon action buttons (edit / delete) ---
 .actions { display: flex; gap: 0.5rem; }
 
 .icon-btn {
@@ -264,6 +259,7 @@ $navy-mid:  #0f2447;
   }
 }
 
+// --- Forms ---
 .form-card {
   max-width: 860px;
   margin: 0 auto;
@@ -293,39 +289,35 @@ $navy-mid:  #0f2447;
 
   .req { color: #f87171; }
 
-  input, select, textarea {
-    background: none;
-    border: none;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    border-radius: 0;
-    color: #fff;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-bottom-color 0.2s;
-    width: 100%;
+input, select, textarea {
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  border-radius: 0;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-bottom-color 0.2s;
+  width: 100%;
 
-    &::placeholder { color: rgba(255,255,255,0.25); }
-    &:focus { border-bottom-color: #a78bfa; }
-    &:disabled { opacity: 0.45; cursor: not-allowed; }
-    &.input-error { border-bottom-color: #f87171; }
-    option { background: #1a1040; color: #fff; }
-  }
+  &::placeholder { color: rgba(255,255,255,0.25); }
+  &:focus { border-bottom-color: #a78bfa; }
+  &:disabled { opacity: 0.45; cursor: not-allowed; }
+  &.input-error { border-bottom-color: #f87171; }
+  option { background: #1a1040; color: #fff; }
+}
+input, select {
 
-  input, select {
-    padding: 0.5rem 0 0.6rem 0;
-    max-width: 60%;
+  padding: 0.5rem 0 0.6rem 0;
+  max-width: 60%;   // ← add this line only
+}
 
-    @media (max-width: 600px) { max-width: 100%; }
-  }
+textarea {
 
-  textarea {
-    padding: 0.4rem 0 0.6rem 0;
-    vertical-align: top;
-    max-width: 80%;
-
-    @media (max-width: 600px) { max-width: 100%; }
-  }
-
+  padding: 0.4rem 0 0.6rem 0;
+  vertical-align: top;
+  max-width: 80%;    // ← notes/description stays full width
+}
   .error {
     font-size: 0.78rem;
     color: #f87171;
@@ -340,14 +332,9 @@ $navy-mid:  #0f2447;
   margin-top: 1.5rem;
   padding-top: 1rem;
   border-top: 1px solid rgba(255,255,255,0.08);
-
-  @media (max-width: 480px) {
-    flex-direction: column;
-
-    .btn { width: 100%; text-align: center; }
-  }
 }
 
+// --- Buttons ---
 .btn {
   padding: 0.55rem 1.25rem;
   border-radius: 8px;
@@ -388,17 +375,12 @@ $navy-mid:  #0f2447;
   }
 }
 
+// --- Filter bar (reports) ---
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
   gap: 1.25rem;
   align-items: flex-end;
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-  }
 }
 
 .filter-group {
@@ -406,11 +388,11 @@ $navy-mid:  #0f2447;
   flex-direction: column;
   gap: 0.4rem;
 
-  label {
-    font-size: 0.82rem;
-    color: rgba(255,255,255,0.75);
-    font-weight: 500;
-  }
+label {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.75);  // was 0.6
+  font-weight: 500;
+}
 
   select {
     background: rgba(255,255,255,0.08);
@@ -439,7 +421,6 @@ $navy-mid:  #0f2447;
     font-size: 0.85rem;
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
-    flex: 1;
 
     &.active {
       background: #7dd3fc;
@@ -465,11 +446,11 @@ $navy-mid:  #0f2447;
   border-radius: 999px;
 }
 
+// --- Tab bar (approve) ---
 .tab-bar {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1.25rem;
-  flex-wrap: wrap;
 
   button {
     padding: 0.5rem 1.25rem;
@@ -492,6 +473,7 @@ $navy-mid:  #0f2447;
   }
 }
 
+// --- Toast ---
 .toast {
   position: fixed;
   top: 1.25rem;
@@ -507,16 +489,11 @@ $navy-mid:  #0f2447;
   backdrop-filter: blur(12px);
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 
-  @media (max-width: 480px) {
-    left: 1rem;
-    right: 1rem;
-    top: 1rem;
-  }
-
   &.toast-success { background: rgba(74,222,128,0.2); color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
   &.toast-error   { background: rgba(248,113,113,0.2); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
 }
 
+// --- Alert (forms) ---
 .alert {
   padding: 0.75rem 1rem;
   border-radius: 8px;
@@ -527,6 +504,7 @@ $navy-mid:  #0f2447;
   &.alert-error   { background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
 }
 
+// --- User donate quick amounts ---
 .quick-amounts {
   display: flex;
   flex-wrap: wrap;
@@ -568,6 +546,7 @@ $navy-mid:  #0f2447;
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
+// --- User donations list ---
 .donation-card {
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.1);
@@ -582,9 +561,22 @@ $navy-mid:  #0f2447;
     margin-bottom: 0.6rem;
   }
 
-  .donor-name { font-weight: 600; color: #fff; display: block; }
-  .donation-for { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
-  .amount { font-size: 1.2rem; font-weight: 700; color: #7dd3fc; }
+  .donor-name {
+    font-weight: 600;
+    color: #fff;
+    display: block;
+  }
+
+  .donation-for {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .amount {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #7dd3fc;
+  }
 
   .card-bottom {
     display: flex;
@@ -610,6 +602,7 @@ $navy-mid:  #0f2447;
   &:hover { background: #bae6fd; }
 }
 
+// --- User home cards ---
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -631,6 +624,7 @@ $navy-mid:  #0f2447;
   }
 }
 
+// --- Loading / Empty states ---
 .loading {
   text-align: center;
   color: rgba(255,255,255,0.5);
@@ -645,7 +639,9 @@ $navy-mid:  #0f2447;
   p { margin-bottom: 1rem; }
 }
 
-.upi-section { margin: 1.25rem 0; }
+.upi-section {
+  margin: 1.25rem 0;
+}
 
 .upi-divider {
   display: flex;
@@ -679,9 +675,22 @@ $navy-mid:  #0f2447;
   margin: 0 auto;
 }
 
-.upi-qr { width: 180px; height: 180px; }
-.upi-id { font-size: 0.82rem; font-weight: 600; color: #0a1628; }
-.upi-hint { font-size: 0.72rem; color: #555; text-align: center; }
+.upi-qr {
+  width: 180px;
+  height: 180px;
+}
+
+.upi-id {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0a1628;
+}
+
+.upi-hint {
+  font-size: 0.72rem;
+  color: #555;
+  text-align: center;
+}
 
 .popup-overlay {
   position: fixed;
@@ -691,7 +700,6 @@ $navy-mid:  #0f2447;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 1rem;
 }
 
 .popup-box {
@@ -699,8 +707,7 @@ $navy-mid:  #0f2447;
   border: 0.5px solid var(--color-border-tertiary);
   border-radius: var(--border-radius-lg);
   padding: 2rem 2.25rem;
-  width: 100%;
-  max-width: 320px;
+  width: 300px;
   text-align: center;
 }
 
@@ -716,7 +723,6 @@ $navy-mid:  #0f2447;
 
   &.popup-icon-success { background: var(--color-background-success); color: var(--color-text-success); }
   &.popup-icon-error   { background: var(--color-background-danger);  color: var(--color-text-danger); }
-  &.popup-icon-warn    { background: rgba(251,191,36,0.15); color: #fde68a; }
 }
 
 .popup-title {
