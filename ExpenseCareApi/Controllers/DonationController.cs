@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ExpenseCareApi.Controllers;
 
-[Authorize(Roles ="Admin,Trustee)")]
+[Authorize(Roles ="Admin,Trustee")]
 [ApiController]
 [Route("api/[controller]")]
 
