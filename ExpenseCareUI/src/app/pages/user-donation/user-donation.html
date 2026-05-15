@@ -77,7 +77,7 @@
 
         <div class="pay-header">
           <button type="button" class="back-btn"
-            (click)="showPayment = false; message = ''; payMode = 'none'">
+            (click)="showPayment = false; message = ''; transactionId = ''">
             ← Edit details
           </button>
           <span class="header-title">Complete payment</span>
@@ -92,120 +92,91 @@
           <div class="amount-pill">₹{{ amount }}</div>
         </div>
 
-        @if (payMode === 'none') {
-          <div class="pay-choose">
-
-            <button type="button" class="pay-option-btn btn-upi-choose"
-              (click)="payMode = 'upi'">
-              <span class="pay-opt-icon">📱</span>
-              <div>
-                <p class="pay-opt-title">Pay via UPI / QR</p>
-                <p class="pay-opt-sub">GPay · PhonePe · Paytm · any UPI app</p>
+        <!-- QR Code section -->
+        @if (showQr && qrDataUrl) {
+          <div class="section-block">
+            <p class="section-label">📱 Pay via UPI / QR</p>
+            <div class="qr-outer">
+              <div class="qr-frame">
+                <span class="qr-scan-label">Scan to pay ₹{{ amount }}</span>
+                <img [src]="qrDataUrl" alt="UPI QR Code" class="upi-qr" />
               </div>
-            </button>
-
-            @if (hasBankDetails) {
-      <button type="button" class="pay-option-btn btn-bank-choose"
-        (click)="payMode = 'bank'">
-        <span class="pay-opt-icon">🏦</span>
-        <div>
-          <p class="pay-opt-title">Pay via Bank Transfer</p>
-          <p class="pay-opt-sub">NEFT · RTGS · IMPS · direct transfer</p>
-        </div>
-      </button>
-    }
-
-            <button type="button" class="pay-option-btn btn-card-choose"
-              (click)="payViaRazorpay()">
-              <span class="pay-opt-icon">💳</span>
-              <div>
-                <p class="pay-opt-title">Pay via Card / Net banking</p>
-                <p class="pay-opt-sub">Razorpay · auto-verified instantly</p>
-              </div>
-            </button>
-
-          </div>
-        }
-
-        @if (payMode === 'upi') {
-          <div class="pay-panel">
-
-            @if (showQr && qrDataUrl) {
-              <div class="qr-outer">
-                <div class="qr-frame">
-                  <span class="qr-scan-label">Scan to pay ₹{{ amount }}</span>
-                  <img [src]="qrDataUrl" alt="UPI QR Code" class="upi-qr" />
-                </div>
-              </div>
-            }
-
+            </div>
             <div class="upi-badges">
               <span>GPay</span><span>PhonePe</span>
               <span>Paytm</span><span>BHIM</span><span>Any UPI app</span>
             </div>
-
             <div class="upi-id-row">
               <span class="upi-id-icon">@</span>
               <span class="upi-id-text">{{ upiId }}</span>
               <button type="button" class="copy-btn" (click)="copyUpiId()">Copy</button>
             </div>
-
-            <button type="button" class="btn-pay btn-upi"
-              (click)="confirmUpiPayment()" [disabled]="isLoading">
-              {{ isLoading ? 'Saving...' : "✅ I've paid via UPI" }}
-            </button>
-
-            <p class="pay-note">ℹ️ Admin will verify and approve your donation</p>
-
-            <button type="button" class="back-btn back-btn-inline"
-              (click)="payMode = 'none'">
-              ← Choose different method
-            </button>
-
           </div>
         }
-        @if (payMode === 'bank') {
-  <div class="pay-panel">
 
-    <div class="bank-details-box">
-      <div class="bank-detail-row">
-        <span class="bank-label">Account Holder</span>
-        <span class="bank-value">{{ accountHolderName }}</span>
-      </div>
-      <div class="bank-detail-row">
-        <span class="bank-label">Bank Name</span>
-        <span class="bank-value">{{ bankName }}</span>
-      </div>
-      <div class="bank-detail-row">
-        <span class="bank-label">Account Number</span>
-        <span class="bank-value">
-          {{ bankAccountNumber }}
-          <button type="button" class="copy-btn" (click)="copyText(bankAccountNumber)">Copy</button>
-        </span>
-      </div>
-      <div class="bank-detail-row">
-        <span class="bank-label">IFSC Code</span>
-        <span class="bank-value">
-          {{ bankIfscCode }}
-          <button type="button" class="copy-btn" (click)="copyText(bankIfscCode)">Copy</button>
-        </span>
-      </div>
-    </div>
+        <!-- Bank details section -->
+        @if (hasBankDetails) {
+          <div class="section-block">
+            <p class="section-label">🏦 Pay via Bank Transfer</p>
+            <div class="bank-details-box">
+              <div class="bank-detail-row">
+                <span class="bank-label">Account Holder</span>
+                <span class="bank-value">{{ accountHolderName }}</span>
+              </div>
+              <div class="bank-detail-row">
+                <span class="bank-label">Bank Name</span>
+                <span class="bank-value">{{ bankName }}</span>
+              </div>
+              <div class="bank-detail-row">
+                <span class="bank-label">Account Number</span>
+                <span class="bank-value">
+                  {{ bankAccountNumber }}
+                  <button type="button" class="copy-btn" (click)="copyText(bankAccountNumber)">Copy</button>
+                </span>
+              </div>
+              <div class="bank-detail-row">
+                <span class="bank-label">IFSC Code</span>
+                <span class="bank-value">
+                  {{ bankIfscCode }}
+                  <button type="button" class="copy-btn" (click)="copyText(bankIfscCode)">Copy</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        }
 
-    <button type="button" class="btn-pay btn-upi"
-      (click)="confirmBankPayment()" [disabled]="isLoading">
-      {{ isLoading ? 'Saving...' : "✅ I've transferred the amount" }}
-    </button>
+        <!-- Already paid section -->
+        <div class="section-block already-paid-block">
+          <p class="section-label">✅ Already paid?</p>
+          <p class="section-sub">Enter your UPI transaction ID or bank reference number</p>
+          <div class="txn-row">
+            <input type="text"
+              [(ngModel)]="transactionId"
+              placeholder="e.g. UTR123456789 or TXN0987654321"
+              class="txn-input"
+              maxlength="100" />
+            <button type="button" class="btn-submit-txn"
+              (click)="confirmManualPayment()"
+              [disabled]="isLoading || !transactionId.trim()">
+              {{ isLoading ? 'Saving...' : 'Submit' }}
+            </button>
+          </div>
+          @if (txnError) {
+            <p class="error">{{ txnError }}</p>
+          }
+        </div>
 
-    <p class="pay-note">ℹ️ Admin will verify and approve your donation</p>
+        <!-- Divider -->
+        <div class="pay-divider">
+          <span>or pay instantly with</span>
+        </div>
 
-    <button type="button" class="back-btn back-btn-inline"
-      (click)="payMode = 'none'">
-      ← Choose different method
-    </button>
-
-  </div>
-}
+        <!-- Razorpay button -->
+        <button type="button" class="btn-pay btn-razorpay"
+          (click)="payViaRazorpay()" [disabled]="isLoading">
+          💳 Pay ₹{{ amount }} via Card / Net Banking
+          <span class="rzp-sub">Powered by Razorpay · auto-verified</span>
+        </button>
 
         @if (message) {
           <p class="pay-message" [ngClass]="{ success: success, error: !success }">

@@ -33,17 +33,19 @@ export class UserDonateComponent implements OnInit {
   success      = false;
 
   showPayment  = false;
-  payMode: 'upi' | 'card' | 'bank' | 'none' = 'none';   // ← 'none' is the default
+  transactionId = '';
+  txnError     = '';
+
   upiId        = '';
   upiName      = '';
   qrDataUrl    = '';
   showQr       = false;
-  accountHolderName = '';
-bankName          = '';
-bankAccountNumber = '';
-bankIfscCode      = '';
-hasBankDetails    = false;
 
+  accountHolderName = '';
+  bankName          = '';
+  bankAccountNumber = '';
+  bankIfscCode      = '';
+  hasBankDetails    = false;
 
   quickAmounts = [100, 500, 1000, 5000];
 
@@ -62,12 +64,12 @@ hasBankDetails    = false;
           this.showQr  = true;
         }
         if (res?.bankAccountNumber) {
-        this.accountHolderName = res.accountHolderName ?? '';
-        this.bankName          = res.bankName          ?? '';
-        this.bankAccountNumber = res.bankAccountNumber ?? '';
-        this.bankIfscCode      = res.bankIfscCode      ?? '';
-        this.hasBankDetails    = true;
-      }
+          this.accountHolderName = res.accountHolderName ?? '';
+          this.bankName          = res.bankName          ?? '';
+          this.bankAccountNumber = res.bankAccountNumber ?? '';
+          this.bankIfscCode      = res.bankIfscCode      ?? '';
+          this.hasBankDetails    = true;
+        }
       }
     });
   }
@@ -132,12 +134,18 @@ hasBankDetails    = false;
   async initiatePayment() {
     if (!this.validate()) return;
     if (this.showQr) await this.generateQr(this.amount!);
-    this.message     = '';
-    this.payMode     = 'none';   // ← shows choice screen first
-    this.showPayment = true;
+    this.message      = '';
+    this.transactionId = '';
+    this.txnError     = '';
+    this.showPayment  = true;
   }
 
-  confirmUpiPayment() {
+  confirmManualPayment() {
+    if (!this.transactionId.trim()) {
+      this.txnError = 'Please enter a transaction ID';
+      return;
+    }
+    this.txnError  = '';
     this.isLoading = true;
     this.http.post(`${environment.apiUrl}/api/donation/add-donation`, {
       userId:           this.userId,
@@ -148,8 +156,8 @@ hasBankDetails    = false;
       donationFor:      this.donationFor  || null,
       notes:            this.notes        || null,
       donationDate:     this.getTodayLocalDate(),
-      paymentMode:      'UPI',
-      paymentReference: null
+      paymentMode:      'Manual',
+      paymentReference: this.transactionId.trim()
     }).subscribe({
       next: () => {
         this.isLoading = false;
@@ -159,7 +167,8 @@ hasBankDetails    = false;
       },
       error: (err) => {
         this.isLoading = false;
-        this.message   = err.error?.message ?? 'Something went wrong.';
+        this.success   = false;
+        this.message   = err.error?.message ?? 'Something went wrong. Please try again.';
       }
     });
   }
@@ -196,16 +205,6 @@ hasBankDetails    = false;
         contact: this.donorMobile
       },
       theme: { color: '#7dd3fc' },
-      config: {
-        display: {
-          blocks: {
-            banks: { name: 'Pay via Bank', instruments: [{ method: 'netbanking' }] },
-            card:  { name: 'Pay via Card', instruments: [{ method: 'card' }] }
-          },
-          sequence: ['block.banks', 'block.card'],
-          preferences: { show_default_blocks: false }
-        }
-      },
       handler: (response: any) => {
         this.saveDonation(response.razorpay_payment_id);
       }
@@ -236,9 +235,6 @@ hasBankDetails    = false;
         this.isLoading   = false;
         this.success     = true;
         this.message     = '🎉 Thank you! Your donation was successful.';
-        this.amount      = null;
-        this.donationFor = '';
-        this.notes       = '';
         setTimeout(() => this.router.navigate(['/user-donations'], { replaceUrl: true }), 2000);
       },
       error: () => {
@@ -248,9 +244,9 @@ hasBankDetails    = false;
     });
   }
 
-  copyUpiId() {
-    navigator.clipboard.writeText(this.upiId);
-  }
+  copyUpiId() { navigator.clipboard.writeText(this.upiId); }
+
+  copyText(value: string) { navigator.clipboard.writeText(value); }
 
   getTodayLocalDate(): string {
     const today = new Date();
@@ -259,35 +255,4 @@ hasBankDetails    = false;
     const dd    = String(today.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
   }
-  confirmBankPayment() {
-  this.isLoading = true;
-  this.http.post(`${environment.apiUrl}/api/donation/add-donation`, {
-    userId:           this.userId,
-    donorName:        this.donorName,
-    donorMobile:      this.donorMobile,
-    donorAddress:     this.donorAddress,
-    amount:           this.amount,
-    donationFor:      this.donationFor  || null,
-    notes:            this.notes        || null,
-    donationDate:     this.getTodayLocalDate(),
-    paymentMode:      'Bank Transfer',
-    paymentReference: null
-  }).subscribe({
-    next: () => {
-      this.isLoading = false;
-      this.success   = true;
-      this.message   = '🎉 Thank you! Donation recorded. Pending admin verification.';
-      setTimeout(() => this.router.navigate(['/user-donations'], { replaceUrl: true }), 2500);
-    },
-    error: (err) => {
-      this.isLoading = false;
-      this.message   = err.error?.message ?? 'Something went wrong.';
-    }
-  });
-}
-
-copyText(value: string) {
-  navigator.clipboard.writeText(value);
-}
-
 }

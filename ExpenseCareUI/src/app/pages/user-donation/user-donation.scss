@@ -20,11 +20,6 @@
   &:hover { color: rgba(255,255,255,0.75); }
 }
 
-.back-btn-inline {
-  align-self: center;
-  margin-top: 0.25rem;
-}
-
 .header-title {
   font-size: 0.875rem;
   font-weight: 600;
@@ -79,64 +74,30 @@
   }
 }
 
-// ── Two choice buttons ─────────────────────────
-.pay-choose {
+// ── Section blocks ─────────────────────────────
+.section-block {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-top: 0.75rem;
+  margin-bottom: 1.25rem;
 }
 
-.pay-option-btn {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  padding: 1rem 1.1rem;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.05);
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.2s;
-
-  .pay-opt-icon {
-    font-size: 1.6rem;
-    flex-shrink: 0;
-  }
-
-  .pay-opt-title {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #fff;
-    margin: 0 0 3px;
-  }
-
-  .pay-opt-sub {
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.4);
-    margin: 0;
-  }
-
-  &.btn-upi-choose:hover {
-    background: rgba(74,222,128,0.1);
-    border-color: rgba(74,222,128,0.3);
-  }
-
-  &.btn-card-choose:hover {
-    background: rgba(82,143,240,0.12);
-    border-color: rgba(82,143,240,0.35);
-  }
+.section-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
 }
 
-// ── UPI panel ─────────────────────────────────
-.pay-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding-top: 0.25rem;
+.section-sub {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  margin: -0.4rem 0 0;
 }
 
+// ── QR ─────────────────────────────────────────
 .qr-outer { display: flex; justify-content: center; }
 
 .qr-frame {
@@ -188,52 +149,21 @@
   border-radius: 10px;
   padding: 0.6rem 0.9rem;
 
-  .upi-id-icon {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.35);
-  }
-
-  .upi-id-text {
-    flex: 1;
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.75);
-  }
-
-  .copy-btn {
-    font-size: 0.72rem;
-    color: #7dd3fc;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    &:hover { color: #bae6fd; }
-  }
+  .upi-id-icon { font-size: 0.85rem; color: rgba(255,255,255,0.35); }
+  .upi-id-text { flex: 1; font-size: 0.85rem; color: rgba(255,255,255,0.75); }
 }
 
-.btn-upi {
-  background: rgba(74,222,128,0.15) !important;
-  border: 1px solid rgba(74,222,128,0.3) !important;
-  color: #4ade80 !important;
-  &:hover:not(:disabled) { background: rgba(74,222,128,0.25) !important; }
-}
-
-.pay-note {
+.copy-btn {
   font-size: 0.72rem;
-  color: rgba(255,255,255,0.3);
-  text-align: center;
-  margin: 0;
+  color: #7dd3fc;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  &:hover { color: #bae6fd; }
 }
 
-// ── Message ───────────────────────────────────
-.pay-message {
-  text-align: center;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
-  &.success { color: #86efac; }
-  &.error   { color: #fca5a5; }
-}
-
-// ── Bank Transfer panel ────────────────────────
+// ── Bank details ───────────────────────────────
 .bank-details-box {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.1);
@@ -269,8 +199,113 @@
   }
 }
 
-// ── Choice button — bank ───────────────────────
-.btn-bank-choose:hover {
-  background: rgba(251,191,36,0.1);
-  border-color: rgba(251,191,36,0.3);
+// ── Already paid section ───────────────────────
+.already-paid-block {
+  background: rgba(74,222,128,0.05);
+  border: 1px solid rgba(74,222,128,0.15);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+}
+
+.txn-row {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.txn-input {
+  flex: 1;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 9px;
+  padding: 0.6rem 0.85rem;
+  color: #fff;
+  font-size: 0.875rem;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+
+  &::placeholder { color: rgba(255,255,255,0.25); }
+  &:focus { border-color: #4ade80; }
+}
+
+.btn-submit-txn {
+  padding: 0.6rem 1.1rem;
+  background: rgba(74,222,128,0.15);
+  border: 1px solid rgba(74,222,128,0.35);
+  border-radius: 9px;
+  color: #4ade80;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) { background: rgba(74,222,128,0.25); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+// ── Divider ────────────────────────────────────
+.pay-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.5rem 0;
+
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+
+  span {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+    white-space: nowrap;
+  }
+}
+
+// ── Razorpay button ────────────────────────────
+.btn-razorpay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0.85rem 1rem !important;
+
+  .rzp-sub {
+    font-size: 0.7rem;
+    font-weight: 400;
+    opacity: 0.65;
+  }
+}
+
+// ── Base pay button ────────────────────────────
+.btn-pay {
+  width: 100%;
+  padding: 0.85rem;
+  background: #7dd3fc;
+  color: #0a1628;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 0.25rem;
+  transition: background 0.2s;
+  font-family: inherit;
+
+  &:hover:not(:disabled) { background: #bae6fd; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+// ── Message ────────────────────────────────────
+.pay-message {
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  &.success { color: #86efac; }
+  &.error   { color: #fca5a5; }
 }
