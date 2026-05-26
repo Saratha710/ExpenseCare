@@ -48,6 +48,7 @@ export class UserDonateComponent implements OnInit {
   bankAccountNumber = '';
   bankIfscCode      = '';
   hasBankDetails    = false;
+  manualPaymentMode = '';
 
   quickAmounts = [100, 500, 1000, 5000];
 
@@ -143,8 +144,8 @@ export class UserDonateComponent implements OnInit {
   }
 
   confirmManualPayment() {
-     this.logging.logEvent('RazorpayClicked', { amount: this.amount });
-     
+     this.logging.logEvent('ManualPaymentSubmitted', { amount: this.amount });
+
     if (!this.transactionId.trim()) {
       this.txnError = 'Please enter a transaction ID';
       return;
@@ -160,7 +161,7 @@ export class UserDonateComponent implements OnInit {
       donationFor:      this.donationFor  || null,
       notes:            this.notes        || null,
       donationDate:     this.getTodayLocalDate(),
-      paymentMode:      'Manual',
+      paymentMode:      this.manualPaymentMode,
       paymentReference: this.transactionId.trim()
     }).subscribe({
       next: () => {
@@ -234,7 +235,7 @@ export class UserDonateComponent implements OnInit {
       donationFor:      this.donationFor  || null,
       notes:            this.notes        || null,
       donationDate:     this.getTodayLocalDate(),
-      paymentMode:      'Razorpay',
+      paymentMode:      'UPI',
       paymentReference: paymentId
     }).subscribe({
       next: () => {

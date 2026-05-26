@@ -145,8 +145,15 @@
 
         <div class="section-block already-paid-block">
           <p class="section-label">✅ Already paid?</p>
-          <p class="section-sub">Enter your UPI transaction ID or bank reference number</p>
-          <div class="txn-row">
+          <div class="form-group">
+            <p class="section-sub">Select how you paid and enter your reference number</p>
+       <select [(ngModel)]="manualPaymentMode" class="txn-input">
+      <option value="">Select payment method</option>
+      <option value="UPI">UPI / QR Code</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+        </select>
+      </div>
+ <div class="txn-row">
             <input type="text"
               [(ngModel)]="transactionId"
               placeholder="e.g. UTR123456789 or TXN0987654321"
