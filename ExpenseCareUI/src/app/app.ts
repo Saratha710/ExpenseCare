@@ -2,6 +2,7 @@ import { Component, signal, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './layout/header/header';
 import { AuthService } from './services/auth';
+import { LoggingService } from './services/logging';
 
 
 @Component({
@@ -24,6 +25,7 @@ import { AuthService } from './services/auth';
 export class App implements OnInit{
   
    auth = inject(AuthService);
+   private logging = inject(LoggingService);
     
   protected readonly title = signal('ExpenseCare');
 

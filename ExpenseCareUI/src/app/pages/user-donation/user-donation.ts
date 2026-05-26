@@ -6,6 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
 import * as QRCode from 'qrcode';
 import { environment } from '../../../environments/environment';
+import { LoggingService } from '../../services/logging';
 
 declare var Razorpay: any;
 
@@ -20,6 +21,7 @@ export class UserDonateComponent implements OnInit {
   private http = inject(HttpClient);
   private auth = inject(AuthService);
   router       = inject(Router);
+  private logging = inject(LoggingService);
 
   userId       = this.auth.userId;
   donorName    = this.auth.userName;
@@ -141,6 +143,8 @@ export class UserDonateComponent implements OnInit {
   }
 
   confirmManualPayment() {
+     this.logging.logEvent('RazorpayClicked', { amount: this.amount });
+     
     if (!this.transactionId.trim()) {
       this.txnError = 'Please enter a transaction ID';
       return;
@@ -174,6 +178,8 @@ export class UserDonateComponent implements OnInit {
   }
 
   payViaRazorpay() {
+     this.logging.logEvent('RazorpayClicked', { amount: this.amount });
+
     this.isLoading = true;
     this.message   = '';
     this.http.post<any>(`${environment.apiUrl}/api/razorpay/create-order`, {
